@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geek-Hub | 极客工坊 - 个人开发者作品集</title>
+    <style>
+        /* ================= 全局变量与基础设置 ================= */
+        :root {
+            --bg-base: #0f172a; 
+            --bg-gradient: radial-gradient(circle at top right, #1e1b4b, #0f172a);
+            --card-bg: rgba(30, 41, 59, 0.7); 
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8; 
+            --tag-bg: rgba(56, 189, 248, 0.15);
+            --tag-text: #7dd3fc;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ================= 布局 ================= */
+        .layout {
+            display: flex;
+            max-width: 1000px; /* 稍微收窄一点，单栏更精致 */
+            margin: 0 auto;
+            padding: 40px 20px;
+            gap: 40px;
+        }
+
+        .sidebar {
+            flex: 1;
+            max-width: 300px;
+            position: sticky;
+            top: 40px;
+            height: fit-content;
+        }
+
+        .main-content { flex: 2; }
+
+        /* ================= 左侧：个人简介样式 ================= */
+        .profile-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #818cf8);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: bold;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+        }
+
+        .name { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
+        .bio { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-btn {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--card-border);
+            transition: all 0.2s;
+        }
+
+        .social-btn:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        /* ================= 右侧：作品展示样式 ================= */
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: "";
+            display: block;
+            width: 6px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 3px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr; /* 单栏排版 */
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        /* 卡片整体变成可点击的链接 */
+        .project-card {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 25px;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            border-color: rgba(56, 189, 248, 0.5);
+            background: rgba(30, 41, 59, 0.9);
+        }
+
+        .project-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; color: #fff; }
+        .project-desc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 20px; }
+
+        .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: var(--tag-bg);
+            color: var(--tag-text);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .project-btn {
+            display: inline-block;
+            text-align: center;
+            padding: 10px 15px;
+            background: rgba(255,255,255,0.05);
+            color: var(--accent);
+            border-radius: 8px;
+            font-weight: 600;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            transition: all 0.2s;
+        }
+
+        .project-card:hover .project-btn {
+            background: var(--accent);
+            color: #0f172a;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--card-border);
+            margin-top: 40px;
+        }
+
+        /* ================= 手机端适配 ================= */
+        @media (max-width: 800px) {
+            .layout { flex-direction: column; padding: 20px; }
+            .sidebar { max-width: 100%; position: static; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="layout">
+        
+        <!-- 左侧：个人简介 -->
+        <aside class="sidebar">
+            <div class="profile-card">
+                <div class="avatar">GH</div>
+                <h1 class="name">Geek-Hub</h1>
+                <p class="bio">独立开发者 / 极客工坊<br>探索 AI 与自动化的边界，热衷于创造各种提升效率的奇妙工具。</p>
+                
+                <div class="social-links">
+                    <a href="#" class="social-btn" target="_blank">GitHub</a>
+                    <a href="#" class="social-btn" target="_blank">联系我</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 右侧：作品展示 -->
+        <main class="main-content">
+            
+            <h2 class="section-title">原创项目</h2>
+            <div class="grid">
+                <a href="./ai-assistant.html" class="project-card">
+                    <h3 class="project-title">🤖 AI 手机管家</h3>
+                    <p class="project-desc">敲两下手机背面，召唤你的专属 AI 管家。支持一句话打开 App、精准跳转网页、丝滑语音对话。基于智谱大模型与高级 Prompt 构建。</p>
+                    <div class="tags">
+                        <span class="tag">快捷指令</span>
+                        <span class="tag">智谱 AI</span>
+                        <span class="tag">Siri 替代</span>
+                    </div>
+                    <div class="project-btn">查看详情与获取</div>
+                </a>
+
+                <!-- 这是占位符，以后有新项目直接复制上面这块 <a> 即可 -->
+                <div class="project-card" style="opacity: 0.6; cursor: not-allowed;">
+                    <h3 class="project-title">⏳ 敬请期待</h3>
+                    <p class="project-desc">这里将展示未来的全新快捷指令，比如「一句话发微信」或「智能家居控制中枢」。</p>
+                    <div class="tags">
+                        <span class="tag">开发中</span>
+                    </div>
+                    <div class="project-btn" style="background: transparent; color: var(--text-muted); border-color: var(--text-muted);">暂未发布</div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <footer>
+        <p>© 2026 Geek-Hub. All Rights Reserved.</p>
+        <p style="margin-top: 5px; font-size: 0.75rem;">本站所有原创工具及快捷指令受《著作权法》保护，严禁非法倒卖。</p>
+    </footer>
+
+</body>
+</html>
