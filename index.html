@@ -175,11 +175,24 @@
                 return Promise.resolve();
             }
 
+            // QQ 群卡片 URL Scheme：手机装了 QQ 会直接打开群资料页
+            var QQ_SCHEME = 'mqqapi://card/show_pslcard?src_type=internal&version=1&uin=' +
+                qq + '&card_type=group&source=qrcode';
+
             btn.addEventListener('click', function () {
                 copyText(qq).then(function () {
-                    flash('群号已复制');
+                    flash('群号已复制，正在打开 QQ…');
                 }).catch(function () {
-                    flash('复制失败，群号 ' + qq);
+                    flash('群号：' + qq + '，正在打开 QQ…');
+                }).then(function () {
+                    // 复制完成后再唤起 QQ，避免跳转打断剪贴板操作
+                    setTimeout(function () {
+                        try { window.location.href = QQ_SCHEME; } catch (e) {}
+                    }, 350);
+                    // 没装 QQ / 唤起失败时，页面还在，就把群号提示回来
+                    setTimeout(function () {
+                        flash('群号已复制');
+                    }, 1800);
                 });
             });
         })();
