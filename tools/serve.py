@@ -258,7 +258,7 @@ JS = """
                   "&dir=" + encodeURIComponent(DIR);
         xhr.open("PUT", url, true);
         xhr.setRequestHeader("Authorization", auth());
-        xhr.timeout = 180000; // 单块最长等 3 分钟（大分片留足余量）
+        xhr.timeout = Math.max(120000, Math.round(UPS / 1048576) * 40000); // 每 MB 留 40 秒
         xhr.onload = function(){
           if(xhr.status === 200){
             tries = 0;
