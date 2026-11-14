@@ -15,6 +15,7 @@
 DIR="${1:-.}"
 SUB="${2:-}"
 PORT="${PORT:-8080}"
+AUTH="${AUTH:-}"   # 例如 AUTH=user:pass sh start.sh /var/www/iso
 SERVE_DIR="$(cd "$DIR" 2>/dev/null && pwd)" || { echo "目录不存在：$DIR"; exit 1; }
 
 # 依赖检查
@@ -34,7 +35,7 @@ tmux kill-session -t "$SESSION" 2>/dev/null
 
 # ---------- 窗口 1：文件服务 ----------
 tmux new-session -d -s "$SESSION" -n web \
-    "cd '$SERVE_DIR' && python3 /root/serve.py -p $PORT -d '$SERVE_DIR' 2>&1 | tee /tmp/gh-web.log"
+    "cd '$SERVE_DIR' && python3 /root/serve.py -p $PORT -d '$SERVE_DIR' ${AUTH:+-u $AUTH} 2>&1 | tee /tmp/gh-web.log"
 
 # ---------- 窗口 2：SSH 隧道（自动重连） ----------
 if [ -n "$SUB" ]; then
