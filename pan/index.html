@@ -60,15 +60,13 @@
   .note b{color:var(--muted)}
   .back{display:inline-block;margin-top:16px;font-size:13px;color:var(--accent);text-decoration:none}
   .legal{margin-top:14px;text-align:left}
-  .legal details{margin-top:8px;border:1px solid var(--line);border-radius:10px;
-    background:rgba(15,23,42,.45);overflow:hidden}
-  .legal summary{cursor:pointer;padding:9px 12px;font-size:12px;color:var(--muted);
-    font-weight:600;list-style:none;outline:none}
-  .legal summary::-webkit-details-marker{display:none}
-  .legal summary::before{content:"▸ ";color:var(--accent)}
-  .legal details[open] summary::before{content:"▾ "}
-  .legal details[open] summary{border-bottom:1px solid var(--line)}
-  .legal .body{padding:10px 12px 12px;font-size:12px;color:#64748b;line-height:1.8}
+  .legal section{margin-top:8px;border:1px solid var(--line);border-radius:10px;
+    background:rgba(15,23,42,.45);padding:11px 13px 13px}
+  .legal h3{margin:0 0 7px;font-size:12px;font-weight:600;color:var(--muted);
+    display:flex;align-items:center;gap:7px}
+  .legal h3::before{content:"";width:3px;height:12px;border-radius:2px;background:var(--accent);
+    flex:0 0 auto}
+  .legal .body{font-size:12px;color:#64748b;line-height:1.8}
   .legal .body p{margin:0 0 7px}
   .legal .body p:last-child{margin-bottom:0}
   .legal .body b{color:var(--muted)}
@@ -94,21 +92,21 @@
   </div>
 
   <div class="legal">
-    <details>
-      <summary>免责声明</summary>
+    <section>
+      <h3>免责声明</h3>
       <div class="body">
         <p>本站为个人非商业性质的技术分享站点，所有文件均来源于网络公开渠道或站长自制，仅供个人学习、研究与怀旧交流，<b>不得用于任何商业用途</b>。</p>
         <p>本站不对文件的安全性、完整性与可用性作任何担保。第三方软件、系统镜像及其附带工具可能存在争议，是否下载与使用由访客自行判断，由此产生的一切后果由使用者自行承担。</p>
         <p>若本站内容侵犯了您的合法权益，请邮件联系 <a href="mailto:ineedhelpofweb@163.com">ineedhelpofweb@163.com</a>，核实后将于第一时间删除相关内容。</p>
       </div>
-    </details>
-    <details>
-      <summary>原创声明</summary>
+    </section>
+    <section>
+      <h3>原创声明</h3>
       <div class="body">
         <p>本站的页面设计、前端代码与原创文字（除特别标注外）均为站长原创，著作权归站长所有，受《中华人民共和国著作权法》保护，<b>严禁非法倒卖、洗稿搬运</b>；转载请注明出处并保留原文链接。</p>
         <p>本站收录的第三方软件、系统镜像、商标及相关素材，其著作权与商标权均归各自权利人所有，本站仅作存档、说明与分享，不构成任何授权关系。</p>
       </div>
-    </details>
+    </section>
   </div>
 </main>
 
