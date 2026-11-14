@@ -41,11 +41,11 @@ tmux new-session -d -s "$SESSION" -n web \
 if [ -n "$SUB" ]; then
     # serveo：支持自定义子域名，地址稳定为 https://<sub>.serveo.net
     TUN="ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=30 -o ServerAliveCountMax=3 \
--R $SUB:80:localhost:$PORT serveo.net"
+-R $SUB:80:127.0.0.1:$PORT serveo.net"
 else
     # localhost.run：随机地址，无需注册
     TUN="ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=30 -o ServerAliveCountMax=3 \
--R 80:localhost:$PORT nokey@localhost.run"
+-R 80:127.0.0.1:$PORT nokey@localhost.run"
 fi
 
 tmux new-window -t "$SESSION" -n tun \
