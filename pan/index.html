@@ -74,7 +74,7 @@
   <p class="status"><span class="dot" aria-hidden="true"></span><span id="tip">准备跳转</span></p>
 
   <div class="note">
-    <p><b>说明：</b>云盘服务运行在一台临时服务器上，<b>长时间无人访问会休眠</b>，届时本页跳转可能失效。</p>
+    <p><b>说明：</b>云盘服务运行在云服务器上，<b>地址长期固定</b>；服务器偶尔休眠维护，届时稍后重试即可。</p>
     <p style="margin-top:8px">若打不开，请稍后重试，或到 <b>GitHub</b> 上联系我。</p>
     <a class="back" href="/">← 返回 Geek-Hub 首页</a>
   </div>
@@ -83,8 +83,8 @@
 <script>
 (function(){
   "use strict";
-  // ==== 云盘地址（隧道重启后需要更新这一行）====
-  var PAN = "https://thursday-receives-brush-algebra.trycloudflare.com";
+  // ==== 云盘地址（Cloudflare 命名隧道固定地址，无需随重启更新）====
+  var PAN = "https://pan.geekhub.dpdns.org";
   // ==========================================
 
   var go = document.getElementById("go");
