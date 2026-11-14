@@ -118,8 +118,13 @@ padding:8px 14px;cursor:pointer;font-size:.85rem}
 td.op{width:104px;text-align:right;white-space:nowrap}
 .del{background:transparent;border:none;color:#f87171;cursor:pointer;font-size:.8rem;padding:4px 6px}
 .ren{background:transparent;border:none;color:#38bdf8;cursor:pointer;font-size:.8rem;padding:4px 6px}
-.renin{width:100%;min-width:120px;background:#0f172a;border:1px solid #38bdf8;color:#f8fafc;
+.renin{width:100%;min-width:110px;background:#0f172a;border:1px solid #38bdf8;color:#f8fafc;
 border-radius:6px;padding:4px 8px;font-size:.9rem}
+.renbox{display:flex;gap:4px;align-items:center}
+.renbox button{background:transparent;border:none;cursor:pointer;font-size:.9rem;padding:2px 5px;
+line-height:1;border-radius:5px}
+.renbox .rok{color:#4ade80}.renbox .rno{color:#94a3b8}
+.renbox button:hover{background:rgba(255,255,255,.08)}
 .admin input#mkname{width:180px}
 #mkRow{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap}
 .legal{margin-top:16px;font-size:.76rem;color:#64748b;text-align:left}
@@ -362,6 +367,7 @@ JS = """
   // ---- 改名（文件和文件夹都支持）----
   var ESCBOX = document.createElement("div");
   function esc(s){ ESCBOX.textContent = s; return ESCBOX.innerHTML; }
+  var editing = null;   // 当前正在编辑的那一格，避免多个输入框叠着
 
   document.addEventListener("click", function(e){
     var b = e.target.closest(".ren"); if(!b) return;
@@ -369,26 +375,34 @@ JS = """
     var tr = b.closest("tr");
     var cell = tr.querySelector("td:first-child");
     if(!cell || cell.querySelector("input")) return;
+    if(editing){ editing.cancel(); }
+
     var oldName = b.getAttribute("data-name");
     var oldHTML = cell.innerHTML;
     var oldLink = cell.querySelector("a");
     var wasDir = oldLink ? /\/$/.test(oldLink.getAttribute("href") || "") : false;
 
+    cell.textContent = "";
+    var box = document.createElement("div");
+    box.className = "renbox";
     var inp = document.createElement("input");
     inp.className = "renin";
     inp.value = oldName;
-    cell.textContent = "";
-    cell.appendChild(inp);
-    // 稍等一拍再聚焦：移动端刚插入就 focus 容易立刻失焦
-    setTimeout(function(){ try { inp.focus(); inp.select(); } catch(err){} }, 40);
+    var okb = document.createElement("button");
+    okb.type = "button"; okb.className = "rok"; okb.textContent = "✓"; okb.title = "保存";
+    var nob = document.createElement("button");
+    nob.type = "button"; nob.className = "rno"; nob.textContent = "✗"; nob.title = "取消";
+    box.appendChild(inp); box.appendChild(okb); box.appendChild(nob);
+    cell.appendChild(box);
 
     var done = false;
-    function cancel(){ if(done) return; done = true; cell.innerHTML = oldHTML; }
+    function finish(){ done = true; if(editing && editing.cell === cell) editing = null; }
+    function cancel(){ if(done) return; finish(); cell.innerHTML = oldHTML; }
     function commit(){
       if(done) return;
       var v = inp.value.trim();
-      if(!v || v === oldName){ cancel(); return; }   // 没改动就原地还原，不刷新页面
-      done = true;
+      if(!v || v === oldName){ cancel(); return; }   // 没改动就还原，不刷新
+      finish();
       msg("改名中…");
       postJSON("/__rename", {dir: DIR, name: oldName, to: v}).then(function(x){
         if(x.ok){
@@ -405,16 +419,23 @@ JS = """
         }
       }).catch(function(){ cell.innerHTML = oldHTML; msg("网络错误", "err"); });
     }
+    editing = {cell: cell, cancel: cancel};
+
+    // 稍等一拍再聚焦：移动端刚插入就 focus 容易立刻失焦
+    setTimeout(function(){ try { inp.focus(); inp.select(); } catch(err){} }, 60);
+
+    okb.addEventListener("click", function(ev){ ev.preventDefault(); commit(); });
+    nob.addEventListener("click", function(ev){ ev.preventDefault(); cancel(); });
     inp.addEventListener("keydown", function(ev){
       if(ev.key === "Enter"){ ev.preventDefault(); commit(); }
       else if(ev.key === "Escape"){ ev.preventDefault(); cancel(); }
     });
+    // 失焦不还原：值改了就顺手保存，没改就保持编辑状态，用户可再点回来继续输入
     inp.addEventListener("blur", function(){
       setTimeout(function(){
         if(done) return;
         if(inp.value.trim() && inp.value.trim() !== oldName) commit();
-        else cancel();
-      }, 120);
+      }, 220);
     });
   });
 
