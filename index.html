@@ -73,7 +73,7 @@
                         联系我
                     </a>
 
-                    <button type="button" class="social-btn" id="qq-group" data-qq="1103788426" aria-label="复制 QQ 群号 1103788426">
+                    <button type="button" class="social-btn" id="qq-group" data-qq="1103788426" aria-label="打开 QQ 群 1103788426">
                         <svg height="16" width="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C7.58 2 4 5.13 4 9c0 1.74.72 3.33 1.9 4.55-.2.72-.55 1.7-.9 2.32-.2.36-.05.6.25.55.83-.14 1.9-.6 2.5-.98.99.36 2.08.56 3.25.56h1c1.17 0 2.26-.2 3.25-.56.6.38 1.67.84 2.5.98.3.05.45-.19.25-.55-.35-.62-.7-1.6-.9-2.32C19.28 12.33 20 10.74 20 9c0-3.87-3.58-7-8-7z"/><circle cx="9.3" cy="8.6" r="1.1" fill="#0f172a"/><circle cx="14.7" cy="8.6" r="1.1" fill="#0f172a"/></svg>
                         <span id="qq-label">QQ 群</span>
                     </button>
@@ -160,40 +160,17 @@
                 }, 2000);
             }
 
-            function copyText(text) {
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    return navigator.clipboard.writeText(text);
-                }
-                var ta = document.createElement('textarea');
-                ta.value = text;
-                ta.style.position = 'fixed';
-                ta.style.opacity = '0';
-                document.body.appendChild(ta);
-                ta.select();
-                try { document.execCommand('copy'); } catch (e) {}
-                document.body.removeChild(ta);
-                return Promise.resolve();
-            }
-
             // QQ 群卡片 URL Scheme：手机装了 QQ 会直接打开群资料页
             var QQ_SCHEME = 'mqqapi://card/show_pslcard?src_type=internal&version=1&uin=' +
                 qq + '&card_type=group&source=qrcode';
 
             btn.addEventListener('click', function () {
-                copyText(qq).then(function () {
-                    flash('群号已复制，正在打开 QQ…');
-                }).catch(function () {
-                    flash('群号：' + qq + '，正在打开 QQ…');
-                }).then(function () {
-                    // 复制完成后再唤起 QQ，避免跳转打断剪贴板操作
-                    setTimeout(function () {
-                        try { window.location.href = QQ_SCHEME; } catch (e) {}
-                    }, 350);
-                    // 没装 QQ / 唤起失败时，页面还在，就把群号提示回来
-                    setTimeout(function () {
-                        flash('群号已复制');
-                    }, 1800);
-                });
+                flash('正在打开 QQ…');
+                try { window.location.href = QQ_SCHEME; } catch (e) {}
+                // 没装 QQ / 唤起被拦截时，页面还在，恢复按钮文字
+                setTimeout(function () {
+                    label.textContent = 'QQ 群';
+                }, 1800);
             });
         })();
     </script>
