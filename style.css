@@ -303,6 +303,111 @@ a {
     color: #0f172a;
 }
 
+/* ---------- 云盘专栏入口 ---------- */
+.drive-card {
+    position: relative;
+    display: block;
+    padding: 26px 24px;
+    text-decoration: none;
+    color: inherit;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(56, 189, 248, 0.28);
+    background:
+        radial-gradient(600px 200px at 100% 0%, rgba(56, 189, 248, 0.16), transparent 70%),
+        var(--card-bg-solid);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+
+.drive-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 40%, rgba(56, 189, 248, 0.08) 50%, transparent 60%);
+    transform: translateX(-100%);
+    transition: transform 0.7s ease;
+    pointer-events: none;
+}
+
+.drive-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(56, 189, 248, 0.6);
+    box-shadow: var(--shadow-hover);
+}
+
+.drive-card:hover::after {
+    transform: translateX(100%);
+}
+
+.drive-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.drive-icon {
+    flex: 0 0 auto;
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    font-size: 26px;
+    border-radius: 16px;
+    background: rgba(56, 189, 248, 0.13);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.drive-title-group {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.drive-title-group h3 {
+    font-size: 1.25rem;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.drive-title-group .tags {
+    margin-bottom: 0;
+}
+
+.drive-arrow {
+    flex: 0 0 auto;
+    font-size: 1.2rem;
+    color: var(--accent);
+    transition: transform 0.3s;
+}
+
+.drive-card:hover .drive-arrow {
+    transform: translateX(6px);
+}
+
+.drive-desc {
+    margin: 0;
+    font-size: 0.92rem;
+    color: var(--text-muted);
+}
+
+@media (max-width: 600px) {
+    .drive-card {
+        padding: 20px 18px;
+    }
+    .drive-head {
+        gap: 12px;
+    }
+    .drive-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 20px;
+        border-radius: 12px;
+    }
+    .drive-title-group h3 {
+        font-size: 1.1rem;
+    }
+}
+
 /* ---------- 页脚 ---------- */
 footer {
     text-align: center;
