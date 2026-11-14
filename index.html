@@ -4,249 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Geek-Hub | 极客工坊 - 个人开发者作品集</title>
-    <style>
-        /* ================= 全局变量与基础设置 ================= */
-        :root {
-            --bg-base: #0f172a; 
-            --bg-gradient: radial-gradient(circle at top right, #1e1b4b, #0f172a);
-            --card-bg: rgba(30, 41, 59, 0.7); 
-            --card-border: rgba(255, 255, 255, 0.1);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #38bdf8; 
-            --tag-bg: rgba(56, 189, 248, 0.15);
-            --tag-text: #7dd3fc;
-        }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta name="description" content="Geek-Hub 极客工坊：独立开发者的作品集，分享 Apple 快捷指令、AI 效率工具与 Web 小工具，探索 AI 与自动化的边界。">
+    <meta name="keywords" content="Geek-Hub,极客工坊,快捷指令,AI工具,iOS快捷指令,个人作品集">
+    <meta name="author" content="Geek-Hub">
+    <link rel="canonical" href="https://geekhub.dpdns.org/">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="robots" content="index, follow">
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: var(--bg-gradient);
-            background-attachment: fixed;
-            color: var(--text-main);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
+    <!-- 社交分享卡片 -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Geek-Hub | 极客工坊">
+    <meta property="og:title" content="Geek-Hub | 极客工坊 - 个人开发者作品集">
+    <meta property="og:description" content="独立开发者的创意试验田，持续分享 Apple 快捷指令、AI 黑科技与效率工具。">
+    <meta property="og:url" content="https://geekhub.dpdns.org/">
+    <meta property="og:image" content="https://geekhub.dpdns.org/og.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Geek-Hub | 极客工坊">
+    <meta name="twitter:description" content="独立开发者的创意试验田，持续分享 Apple 快捷指令、AI 黑科技与效率工具。">
+    <meta name="twitter:image" content="https://geekhub.dpdns.org/og.png">
 
-        /* ================= 布局 ================= */
-        .layout {
-            display: flex;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            gap: 40px;
-        }
+    <!-- 图标 -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230f172a'/%3E%3Ctext x='50' y='68' font-size='46' font-family='system-ui,sans-serif' font-weight='bold' fill='%2338bdf8' text-anchor='middle'%3EGH%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230f172a'/%3E%3Ctext x='50' y='68' font-size='46' font-family='system-ui,sans-serif' font-weight='bold' fill='%2338bdf8' text-anchor='middle'%3EGH%3C/text%3E%3C/svg%3E">
 
-        .sidebar {
-            flex: 1;
-            max-width: 300px;
-            position: sticky;
-            top: 40px;
-            height: fit-content;
-        }
+    <link rel="stylesheet" href="style.css">
 
-        .main-content { flex: 2; }
-
-        /* ================= 左侧：个人简介样式 ================= */
-        .profile-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent), #818cf8);
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            font-weight: bold;
-            color: #fff;
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
-        }
-
-        .name { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
-        .bio { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; }
-
-        .social-links {
-            display: flex;
-            flex-direction: column; /* 改成上下排列，更整洁 */
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .social-btn {
-            color: var(--text-main);
-            text-decoration: none;
-            font-size: 0.9rem;
-            padding: 10px 16px;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--card-border);
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .social-btn:hover {
-            background: var(--accent);
-            color: #fff;
-            border-color: var(--accent);
-        }
-
-        /* 邮箱提示文字 */
-        .email-tip {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 15px;
-            line-height: 1.4;
-            background: rgba(0,0,0,0.2);
-            padding: 10px;
-            border-radius: 8px;
-        }
-
-        /* ================= 右侧：作品展示样式 ================= */
-        .section-title {
-            font-size: 1.8rem;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section-title::before {
-            content: "";
-            display: block;
-            width: 6px;
-            height: 24px;
-            background: var(--accent);
-            border-radius: 3px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 25px;
-            margin-bottom: 50px;
-        }
-
-        .project-card {
-            display: block;
-            text-decoration: none;
-            color: inherit;
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 25px;
-            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-        }
-
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
-            border-color: rgba(56, 189, 248, 0.5);
-            background: rgba(30, 41, 59, 0.9);
-        }
-
-        .project-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; color: #fff; }
-        .project-desc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 20px; }
-
-        .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-
-        .tag {
-            font-size: 0.75rem;
-            padding: 4px 10px;
-            border-radius: 20px;
-            background: var(--tag-bg);
-            color: var(--tag-text);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-        }
-
-        .project-btn {
-            display: inline-block;
-            text-align: center;
-            padding: 10px 15px;
-            background: rgba(255,255,255,0.05);
-            color: var(--accent);
-            border-radius: 8px;
-            font-weight: 600;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            transition: all 0.2s;
-        }
-
-        .project-card:hover .project-btn {
-            background: var(--accent);
-            color: #0f172a;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            border-top: 1px solid var(--card-border);
-            margin-top: 40px;
-        }
-
-        /* ================= 手机端适配 ================= */
-        @media (max-width: 800px) {
-            .layout { flex-direction: column; padding: 20px; }
-            .sidebar { max-width: 100%; position: static; }
-        }
-    </style>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Geek-Hub | 极客工坊",
+      "url": "https://geekhub.dpdns.org/",
+      "description": "独立开发者的创意试验田，分享 Apple 快捷指令、AI 工具与效率方案。",
+      "inLanguage": "zh-CN",
+      "publisher": {
+        "@type": "Person",
+        "name": "Geek-Hub",
+        "url": "https://github.com/zzh-hui/"
+      }
+    }
+    </script>
 </head>
 <body>
 
+    <a class="skip-link" href="#main">跳到主要内容</a>
+
     <div class="layout">
-        
+
         <!-- 左侧：个人简介 -->
         <aside class="sidebar">
             <div class="profile-card">
-                <div class="avatar">GH</div>
+                <div class="avatar" aria-hidden="true">GH</div>
                 <h1 class="name">Geek-Hub</h1>
                 <p class="bio">独立开发者 / 极客工坊<br>探索 AI 与自动化的边界，热衷于创造各种提升效率的奇妙工具。</p>
-                
-                <div class="social-links">
-                    <!-- 你的 GitHub 主页 -->
-                    <a href="https://github.com/zzh-hui/" class="social-btn" target="_blank">
-                        <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+
+                <nav class="social-links" aria-label="联系方式">
+                    <a href="https://github.com/zzh-hui/" class="social-btn" target="_blank" rel="noopener noreferrer">
+                        <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
                         GitHub
                     </a>
-                    
-                    <!-- 你的邮箱，已配置好主题和防爬虫参数 -->
-                    <a href="mailto:ineedhelpofweb@163.com?subject=Geek%20Hub&body=请在这里填写您的具体问题或建议：" class="social-btn">
-                        <svg height="16" width="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path></svg>
+
+                    <a href="mailto:ineedhelpofweb@163.com?subject=Geek%20Hub&amp;body=%E8%AF%B7%E5%9C%A8%E8%BF%99%E9%87%8C%E5%A1%AB%E5%86%99%E6%82%A8%E7%9A%84%E5%85%B7%E4%BD%93%E9%97%AE%E9%A2%98%E6%88%96%E5%BB%BA%E8%AE%AE%EF%BC%9A" class="social-btn">
+                        <svg height="16" width="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path></svg>
                         联系我
                     </a>
-                </div>
-                
-                <!-- 邮箱沟通提示 -->
-                <div class="email-tip">
+                </nav>
+
+                <p class="email-tip">
                     发邮件请将标题设为 <strong>Geek Hub</strong>，否则可能会被漏看哦~
-                </div>
+                </p>
             </div>
         </aside>
 
         <!-- 右侧：作品展示 -->
-        <main class="main-content">
-            
+        <main class="main-content" id="main">
+
             <h2 class="section-title">原创项目</h2>
             <div class="grid">
-                
+
                 <a href="./ai-assistant.html" class="project-card">
                     <h3 class="project-title">🤖 AI 手机管家</h3>
                     <p class="project-desc">敲两下手机背面，召唤你的专属 AI 管家。支持一句话打开 App、精准跳转网页、丝滑语音对话。基于智谱大模型与高级 Prompt 构建。</p>
@@ -258,7 +97,7 @@
                     <div class="project-btn">查看详情与获取</div>
                 </a>
 
-                <div class="project-card" style="opacity: 0.6; cursor: not-allowed;">
+                <div class="project-card" aria-disabled="true">
                     <h3 class="project-title">⏳ 敬请期待</h3>
                     <p class="project-desc">这里将展示未来的全新快捷指令，比如「一句话发微信」或「智能家居控制中枢」。</p>
                     <div class="tags">
@@ -273,9 +112,12 @@
     </div>
 
     <footer>
-        <p>© 2026 Geek-Hub. All Rights Reserved.</p>
-        <p style="margin-top: 5px; font-size: 0.75rem;">本站所有原创工具及快捷指令受《著作权法》保护，严禁非法倒卖。</p>
+        <p>© <span id="year">2026</span> Geek-Hub. All Rights Reserved.</p>
+        <p>本站所有原创工具及快捷指令受《著作权法》保护，严禁非法倒卖。</p>
     </footer>
 
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>
