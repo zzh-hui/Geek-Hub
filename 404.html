@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>页面走丢了 - Geek-Hub 极客工坊</title>
+    <meta name="description" content="这个页面不存在，回到 Geek-Hub 首页继续逛逛。">
+    <meta name="robots" content="noindex, follow">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230f172a'/%3E%3Ctext x='50' y='68' font-size='46' font-family='system-ui,sans-serif' font-weight='bold' fill='%2338bdf8' text-anchor='middle'%3EGH%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .wrap {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .box {
+            max-width: 520px;
+            width: 100%;
+            text-align: center;
+            background: var(--card-bg);
+            background-color: var(--card-bg-solid);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 48px 32px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .code {
+            font-size: 5rem;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .box h1 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+
+        .box p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 28px;
+        }
+
+        .home-btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background: var(--accent);
+            color: #0f172a;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 30px;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .home-btn:hover {
+            background: var(--accent-soft);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <main class="wrap">
+        <div class="box">
+            <div class="code">404</div>
+            <h1>这里什么都没有</h1>
+            <p>页面可能被移动或删除了。回首页看看我的作品吧 👇</p>
+            <a class="home-btn" href="/">返回 Geek-Hub</a>
+        </div>
+    </main>
+</body>
+</html>
