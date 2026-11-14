@@ -360,37 +360,62 @@ JS = """
   });
 
   // ---- 改名（文件和文件夹都支持）----
+  var ESCBOX = document.createElement("div");
+  function esc(s){ ESCBOX.textContent = s; return ESCBOX.innerHTML; }
+
   document.addEventListener("click", function(e){
     var b = e.target.closest(".ren"); if(!b) return;
-    var cell = b.closest("tr").querySelector("td:first-child");
+    e.preventDefault();
+    var tr = b.closest("tr");
+    var cell = tr.querySelector("td:first-child");
     if(!cell || cell.querySelector("input")) return;
     var oldName = b.getAttribute("data-name");
+    var oldHTML = cell.innerHTML;
+    var oldLink = cell.querySelector("a");
+    var wasDir = oldLink ? /\/$/.test(oldLink.getAttribute("href") || "") : false;
 
-    cell.textContent = "";
     var inp = document.createElement("input");
     inp.className = "renin";
     inp.value = oldName;
+    cell.textContent = "";
     cell.appendChild(inp);
-    inp.focus();
-    if(inp.select) inp.select();
+    // 稍等一拍再聚焦：移动端刚插入就 focus 容易立刻失焦
+    setTimeout(function(){ try { inp.focus(); inp.select(); } catch(err){} }, 40);
 
     var done = false;
+    function cancel(){ if(done) return; done = true; cell.innerHTML = oldHTML; }
     function commit(){
       if(done) return;
       var v = inp.value.trim();
-      if(!v || v === oldName){ location.reload(); return; }
+      if(!v || v === oldName){ cancel(); return; }   // 没改动就原地还原，不刷新页面
       done = true;
       msg("改名中…");
       postJSON("/__rename", {dir: DIR, name: oldName, to: v}).then(function(x){
-        if(x.ok){ msg("已改名为 " + x.j.name, "ok"); setTimeout(function(){location.reload();}, 400); }
-        else { msg("改名失败：" + (x.j.error || "未知错误"), "err"); setTimeout(function(){location.reload();}, 1200); }
-      }).catch(function(){ msg("网络错误", "err"); setTimeout(function(){location.reload();}, 1200); });
+        if(x.ok){
+          var nm = x.j.name || v;
+          var href = encodeURIComponent(nm) + (wasDir ? "/" : "");
+          cell.innerHTML = '<a href="' + href + '">' + esc(nm) + (wasDir ? "/" : "") + '</a>';
+          Array.prototype.forEach.call(tr.querySelectorAll("button[data-name]"), function(btn){
+            btn.setAttribute("data-name", nm);
+          });
+          msg("已改名为 " + nm, "ok");
+        } else {
+          cell.innerHTML = oldHTML;
+          msg("改名失败：" + (x.j.error || "未知错误"), "err");
+        }
+      }).catch(function(){ cell.innerHTML = oldHTML; msg("网络错误", "err"); });
     }
     inp.addEventListener("keydown", function(ev){
       if(ev.key === "Enter"){ ev.preventDefault(); commit(); }
-      if(ev.key === "Escape"){ location.reload(); }
+      else if(ev.key === "Escape"){ ev.preventDefault(); cancel(); }
     });
-    inp.addEventListener("blur", function(){ setTimeout(function(){ if(!done) commit(); }, 150); });
+    inp.addEventListener("blur", function(){
+      setTimeout(function(){
+        if(done) return;
+        if(inp.value.trim() && inp.value.trim() !== oldName) commit();
+        else cancel();
+      }, 120);
+    });
   });
 
   bindLogin();
