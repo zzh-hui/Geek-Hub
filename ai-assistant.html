@@ -3,65 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 手机管家 - Geek-Hub</title>
+    <title>AI 手机管家 - Geek-Hub 极客工坊</title>
+
+    <meta name="description" content="基于智谱大模型与苹果快捷指令的 AI 手机管家：敲两下手机背面即可语音唤醒，一句话打开 App、直达网址、连续对话。附完整配置教程与提示词。">
+    <meta name="keywords" content="AI手机管家,快捷指令,iOS快捷指令,智谱AI,轻点背面,Siri替代">
+    <meta name="author" content="Geek-Hub">
+    <link rel="canonical" href="https://geekhub.dpdns.org/ai-assistant.html">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Geek-Hub | 极客工坊">
+    <meta property="og:title" content="AI 手机管家 - 敲两下手机背面，召唤 AI 管家">
+    <meta property="og:description" content="一句话打开 App、精准跳转网页、丝滑语音对话。基于智谱大模型与苹果快捷指令打造。">
+    <meta property="og:url" content="https://geekhub.dpdns.org/ai-assistant.html">
+    <meta property="og:image" content="https://geekhub.dpdns.org/og.png">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AI 手机管家 - Geek-Hub">
+    <meta name="twitter:description" content="敲两下手机背面，召唤你的专属 AI 管家。">
+    <meta name="twitter:image" content="https://geekhub.dpdns.org/og.png">
+
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230f172a'/%3E%3Ctext x='50' y='68' font-size='46' font-family='system-ui,sans-serif' font-weight='bold' fill='%2338bdf8' text-anchor='middle'%3EGH%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230f172a'/%3E%3Ctext x='50' y='68' font-size='46' font-family='system-ui,sans-serif' font-weight='bold' fill='%2338bdf8' text-anchor='middle'%3EGH%3C/text%3E%3C/svg%3E">
+
+    <link rel="stylesheet" href="style.css">
+
     <style>
-        /* ================= 全局基础设置 ================= */
-        :root {
-            --bg-color: #0f172a;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #38bdf8;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
-            background-attachment: fixed;
-            color: var(--text-main);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 40px 20px;
         }
 
-        /* 顶部导航返回 */
         .back-link {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             color: var(--accent);
             text-decoration: none;
             margin-bottom: 30px;
             font-size: 0.9rem;
             font-weight: 600;
-            transition: transform 0.2s;
+            min-height: 44px;
         }
-        .back-link:hover { transform: translateX(-5px); }
 
-        /* 头部区域 */
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
         .header {
             text-align: center;
             margin-bottom: 50px;
         }
 
-        .header-icon { font-size: 60px; margin-bottom: 15px; display: block; }
-        
-        h1 { font-size: 2.5rem; margin-bottom: 10px; color: #fff; letter-spacing: -0.5px; }
-        
+        .header-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #fff;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
         .subtitle {
             font-size: 1.1rem;
             color: var(--text-muted);
             max-width: 600px;
-            margin: 0 auto 30px;
+            margin: 0 auto 12px;
         }
 
-        /* 核心按钮 */
+        .meta-line {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
         .btn-download {
             display: inline-block;
             padding: 15px 40px;
@@ -72,164 +94,241 @@
             font-weight: 700;
             font-size: 1.1rem;
             box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
-            transition: all 0.3s;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
         }
 
         .btn-download:hover {
-            background: #7dd3fc;
+            background: var(--accent-soft);
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(56, 189, 248, 0.6);
         }
 
-        /* 内容卡片 */
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
+        ul.check-list {
+            list-style: none;
         }
 
-        h2 {
-            font-size: 1.4rem;
-            color: #fff;
-            margin-bottom: 20px;
-            border-left: 4px solid var(--accent);
-            padding-left: 12px;
-        }
-
-        ul { list-style-type: none; }
-        ul li {
+        ul.check-list li {
             margin-bottom: 12px;
             padding-left: 24px;
             position: relative;
         }
-        ul li::before {
+
+        ul.check-list li::before {
             content: "✦";
             position: absolute;
             left: 0;
             color: var(--accent);
         }
 
-        /* 提示词代码块 */
+        .card ol {
+            padding-left: 20px;
+            color: var(--text-muted);
+        }
+
+        .card ol li {
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+        }
+
         .code-block {
             background: #0d1117;
             border: 1px solid #30363d;
-            border-radius: 8px;
+            border-radius: var(--radius-sm);
             padding: 20px;
-            font-family: monospace;
+            padding-top: 52px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
             font-size: 0.9rem;
+            line-height: 1.7;
             color: #a5d6ff;
             position: relative;
             white-space: pre-wrap;
-            word-wrap: break-word;
+            overflow-wrap: anywhere;
         }
 
         .copy-btn {
             position: absolute;
             top: 10px;
             right: 10px;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: #fff;
-            padding: 5px 12px;
+            padding: 6px 12px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 0.8rem;
-            transition: all 0.2s;
+            font-family: inherit;
+            transition: background-color 0.2s, color 0.2s;
         }
 
-        .copy-btn:hover { background: var(--accent); color: #000; }
+        .copy-btn:hover {
+            background: var(--accent);
+            color: #000;
+        }
 
-        /* 底部声明 */
+        .faq dt {
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .faq dd {
+            margin: 0 0 16px;
+            color: var(--text-muted);
+            font-size: 0.92rem;
+        }
+
+        .faq dd:last-child {
+            margin-bottom: 0;
+        }
+
         .footer {
             text-align: center;
             margin-top: 50px;
             padding-top: 20px;
-            border-top: 1px solid var(--border-color);
+            border-top: 1px solid var(--card-border);
             font-size: 0.85rem;
             color: var(--text-muted);
         }
 
+        .footer p + p {
+            margin-top: 6px;
+        }
+
         @media (max-width: 600px) {
-            h1 { font-size: 2rem; }
-            .card { padding: 20px; }
+            .header h1 { font-size: 2rem; }
+            .header-icon { font-size: 48px; }
+            .container { padding: 24px 16px 0; }
+            .header { margin-bottom: 32px; }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- 返回首页 -->
         <a href="index.html" class="back-link">← 返回 Geek-Hub</a>
 
-        <!-- 头部 -->
         <header class="header">
-            <span class="header-icon">🤖</span>
+            <span class="header-icon" aria-hidden="true">🤖</span>
             <h1>AI 手机管家</h1>
             <p class="subtitle">基于智谱大模型与苹果快捷指令打造。敲两下手机背面，让你的 iPhone 变成真正的私人助理。</p>
-            <a href="https://www.icloud.com/shortcuts/f085ff53d998442f9f98c500e4f2f693" class="btn-download" target="_blank">📥 获取快捷指令 (iCloud)</a>
+            <p class="meta-line">适用系统：iOS 15 及以上 · 需安装「快捷指令」App</p>
+            <a href="https://www.icloud.com/shortcuts/f085ff53d998442f9f98c500e4f2f693" class="btn-download" target="_blank" rel="noopener noreferrer">📥 获取快捷指令 (iCloud)</a>
         </header>
 
         <!-- 功能亮点 -->
-        <div class="card">
+        <section class="card">
             <h2>✨ 核心功能</h2>
-            <ul>
+            <ul class="check-list">
                 <li><strong>App 极速唤醒：</strong> 说“打开微信/抖音”，手机自动跳转，并配有语音回复“正在为您打开”。</li>
                 <li><strong>精准网址直达：</strong> 告别传统搜索，一句话直达指定官网真实链接。</li>
                 <li><strong>丝滑语音对话：</strong> 依托大模型能力，实现极低延迟的丝滑语音交流。</li>
                 <li><strong>物理触发机制：</strong> 完美避开系统限制，利用「轻点背面」功能实现秒级响应。</li>
             </ul>
-        </div>
+        </section>
 
         <!-- 使用教程 -->
-        <div class="card">
+        <section class="card">
             <h2>💡 如何优雅使用？</h2>
             <p style="margin-bottom: 10px;">获取并添加快捷指令后，请按以下步骤设置：</p>
-            <ol style="padding-left: 20px; color: var(--text-muted);">
-                <li style="margin-bottom: 8px;">打开手机【设置】➡️【辅助功能】「即无障碍」➡️【触控】➡️【轻点背面】。</li>
-                <li style="margin-bottom: 8px;">选择【轻点两下】。</li>
-                <li style="margin-bottom: 8px;">滑到最底部，找到并选择「AI 手机管家」快捷指令。</li>
+            <ol>
+                <li>打开手机【设置】➡️【辅助功能】➡️【触控】➡️【轻点背面】。</li>
+                <li>选择【轻点两下】。</li>
+                <li>滑到最底部，找到并选择「AI 手机管家」快捷指令。</li>
                 <li>敲击手机背面，看到语音输入出现后直接说出你的指令！</li>
             </ol>
-        </div>
+            <p style="margin-top: 14px; color: var(--text-muted); font-size: 0.88rem;">
+                提示：首次运行需要允许「麦克风」与「网络」权限；戴厚手机壳时轻点背面可能不灵敏，可改为轻点三下。
+            </p>
+        </section>
 
         <!-- 核心技术秘籍（复制提示词） -->
-        <div class="card">
+        <section class="card">
             <h2>🧠 核心技术秘籍 (Prompt)</h2>
-            <p style="margin-bottom: 15px; font-size: 0.95rem;">让 AI 乖乖听话并执行指令的关键，在于这套专门调试的 <code>system</code> 提示词： （其实说实话无需复制，快捷指令里已设置好提示词了）</p>
-            
-            <div class="code-block">
-                <button class="copy-btn" onclick="copyPrompt()">复制提示词</button>
-                <span id="prompt-text">你是一个智能管家。如果用户让你打开某个App（比如微信、支付宝、抖音、网易云音乐），你必须严格且只回复这个格式：[打开App名]，不要回复任何多余的字。例如用户说打开微信，你只回复：[打开微信]。如果用户让你打开网页，你必须严格且只回复这个格式[网页链接:xxx]，不要回复任何其他多余内容。比如用户让你打开哔哩哔哩官网，你就从网上搜索哔哩哔哩官网链接，并只回复[网页链接:xxx]同理，如果用户回复关机，你就回复格式[命令:关机]，重启[命令:重启]。如果是其他问题，请正常、回答。满足用户需求</span>
-            </div>
-        </div>
+            <p style="margin-bottom: 15px;">让 AI 乖乖听话并执行指令的关键，在于这套专门调试的 <code>system</code> 提示词（快捷指令里已内置，无需重复配置）：</p>
 
-        <!-- 版权声明 -->
-        <div class="footer">
+            <div class="code-block">
+                <button class="copy-btn" onclick="copyPrompt()" type="button">复制提示词</button><span id="prompt-text">你是一个智能管家。如果用户让你打开某个App（比如微信、支付宝、抖音、网易云音乐），你必须严格且只回复这个格式：[打开App名]，不要回复任何多余的字。例如用户说打开微信，你只回复：[打开微信]。如果用户让你打开网页，你必须严格且只回复这个格式[网页链接:xxx]，不要回复任何其他多余内容。比如用户让你打开哔哩哔哩官网，你就从网上搜索哔哩哔哩官网链接，并只回复[网页链接:xxx]同理，如果用户回复关机，你就回复格式[命令:关机]，重启[命令:重启]。如果是其他问题，请正常回答，满足用户需求。</span>
+            </div>
+        </section>
+
+        <!-- 隐私说明 -->
+        <section class="card">
+            <h2>🔒 隐私说明</h2>
+            <ul class="check-list">
+                <li>你说出的语音会先在手机本地转成文字，文字内容会发送至智谱 AI 的接口，用于理解指令并生成回复。</li>
+                <li>快捷指令本身不收集、不上传通讯录、位置、照片等其他个人信息。</li>
+                <li>如你不希望语音内容离开设备，请不要使用本快捷指令。</li>
+            </ul>
+        </section>
+
+        <!-- 常见问题 -->
+        <section class="card faq">
+            <h2>❓ 常见问题</h2>
+            <dl>
+                <dt>敲背面没反应？</dt>
+                <dd>先确认【设置 → 辅助功能 → 触控 → 轻点背面】里已绑定本快捷指令；系统需要 1～2 秒响应，连续敲击过快可能识别不到。</dd>
+
+                <dt>语音输入没有弹出？</dt>
+                <dd>检查【设置 → 隐私与安全性 → 麦克风】中是否允许「快捷指令」使用麦克风，或尝试重新添加一次快捷指令。</dd>
+
+                <dt>说了“打开某 App”却没跳转？</dt>
+                <dd>该 App 可能未安装，或名称与系统识别不一致。可先说“打开设置”测试链路是否正常。</dd>
+
+                <dt>会不会很耗电？</dt>
+                <dd>不使用时不常驻后台、不额外耗电；仅在触发那一次调用语音识别与大模型接口。</dd>
+            </dl>
+        </section>
+
+        <footer class="footer">
             <p>本快捷指令逻辑、JSON 结构及提示词方案由 <strong>哔站@APPLE_INT</strong> 独立原创开发。</p>
-            <p>受《著作权法》保护，未经授权严禁倒卖与洗稿。</br>© 2026 Geek-Hub.</p>
-        </div>
+            <p>受《著作权法》保护，未经授权严禁倒卖与洗稿。<br>© <span id="year">2026</span> Geek-Hub.</p>
+        </footer>
     </div>
 
-    <!-- 复制功能的 JavaScript -->
     <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
         function copyPrompt() {
-            var text = document.getElementById("prompt-text").innerText;
-            navigator.clipboard.writeText(text).then(function() {
-                var btn = document.querySelector('.copy-btn');
-                btn.innerText = "已复制！";
+            var text = document.getElementById("prompt-text").textContent;
+            var btn = document.querySelector('.copy-btn');
+
+            function done() {
+                var old = btn.textContent;
+                btn.textContent = "已复制！";
                 btn.style.background = "#38bdf8";
                 btn.style.color = "#000";
-                setTimeout(function() {
-                    btn.innerText = "复制提示词";
+                setTimeout(function () {
+                    btn.textContent = old;
                     btn.style.background = "rgba(255,255,255,0.1)";
                     btn.style.color = "#fff";
                 }, 2000);
-            }).catch(function(err) {
-                alert("复制失败，请手动选择文本复制");
-            });
+            }
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(done).catch(fallback);
+            } else {
+                fallback();
+            }
+
+            function fallback() {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.setAttribute('readonly', '');
+                ta.style.position = 'fixed';
+                ta.style.left = '-9999px';
+                document.body.appendChild(ta);
+                ta.select();
+                try {
+                    document.execCommand('copy');
+                    done();
+                } catch (e) {
+                    alert('复制失败，请长按文本手动选择复制');
+                }
+                document.body.removeChild(ta);
+            }
         }
     </script>
 </body>
