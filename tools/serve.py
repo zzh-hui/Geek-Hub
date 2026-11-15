@@ -662,6 +662,9 @@ class Handler(BaseHTTPRequestHandler):
                     elif e:
                         start = max(0, size - int(e))
                         end = size - 1
+                    # 区间右端不能超过文件末尾，否则声明的长度大于实际发送量，连接会一直挂着
+                    if end > size - 1:
+                        end = size - 1
                     if start > end or start >= size:
                         self.send_response(416)
                         self.send_header("Content-Range", "bytes */%d" % size)
