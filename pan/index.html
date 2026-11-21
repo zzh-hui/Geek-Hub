@@ -6,7 +6,7 @@
 <title>Git Drive · Geek-Hub 文件库</title>
 <meta name="description" content="Geek-Hub 文件库：Windows 原版镜像与实用工具存档，支持断点续传。">
 <meta name="theme-color" content="#1c1e2a">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📁</text></svg>">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M2 6.6A2.6 2.6 0 0 1 4.6 4h4.1c.55 0 1.08.22 1.47.61L11.9 6.3h7.5A2.6 2.6 0 0 1 22 8.9v1.2H2z' fill='%23FFCE4A'/><path d='M2 9.6h20v7.8A2.6 2.6 0 0 1 19.4 20H4.6A2.6 2.6 0 0 1 2 17.4z' fill='%23FFBA1F'/></svg>">
 <style>
   :root{
     --accent:#4cc2ff;
@@ -22,42 +22,53 @@
                #14161d;
     font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
     color:var(--text);display:flex;align-items:center;justify-content:center;
-    padding:22px 14px;min-height:100vh;
+    padding:10px;min-height:100vh;
   }
-  .win{width:100%;max-width:1060px;height:calc(100vh - 44px);min-height:520px;
-    background:var(--win);border:1px solid rgba(255,255,255,.09);border-radius:10px;
+  .win{width:100%;max-width:none;height:calc(100vh - 20px);min-height:480px;
+    background:var(--win);border:1px solid rgba(255,255,255,.09);border-radius:9px;
     box-shadow:0 24px 70px rgba(0,0,0,.55);display:flex;flex-direction:column;overflow:hidden}
+  body.mini{padding:26px 18px}
+  body.mini .win{max-width:920px;margin:0 auto;height:calc(100vh - 52px);
+    border-radius:11px;box-shadow:0 34px 90px rgba(0,0,0,.68)}
+  body.mini .titlebar{background:#1f1f1f}
   .titlebar{display:flex;align-items:center;height:38px;background:var(--bar);flex:0 0 auto}
   .tabs{display:flex;align-items:flex-end;height:100%}
-  .tab{display:flex;align-items:center;gap:8px;height:32px;padding:0 14px;background:#3a3a3a;
+  .tab{display:flex;align-items:center;gap:7px;height:32px;padding:0 12px 0 14px;background:#3a3a3a;
     border-radius:8px 8px 0 0;font-size:.82rem;align-self:flex-end}
-  .tab .x{opacity:.6;font-size:.9rem}
+  .tab svg{width:14px;height:14px}
+  .tab .x{opacity:.5;font-size:.85rem;margin-left:2px}
   .newtab{margin-left:8px;color:var(--muted);font-size:1rem;padding:4px 8px;border-radius:6px}
   .tbtns{margin-left:auto;display:flex;height:100%}
-  .tbtns span{width:44px;display:grid;place-items:center;color:#d1d1d1;font-size:.85rem;cursor:default}
-  .tbtns span:hover{background:rgba(255,255,255,.08)}
-  .tbtns .close:hover{background:#c42b1c;color:#fff}
+  .tbtns button{width:46px;height:100%;display:grid;place-items:center;background:none;border:none;
+    color:#d1d1d1;cursor:pointer;padding:0}
+  .tbtns button svg{width:11px;height:11px;display:block}
+  .tbtns button:hover{background:rgba(255,255,255,.08)}
+  .tbtns button.cls:hover{background:#c42b1c;color:#fff}
   .nav{display:flex;align-items:center;gap:6px;padding:6px 10px;background:var(--bar);border-bottom:1px solid var(--line);flex:0 0 auto}
   .nbtn{width:30px;height:30px;border-radius:6px;display:grid;place-items:center;color:#cfcfcf;
     font-size:.95rem;background:transparent;border:none;cursor:pointer;flex:0 0 auto}
   .nbtn:hover{background:rgba(255,255,255,.09)}
+  .nbtn svg{width:15px;height:15px}
   .crumbs{flex:1;display:flex;align-items:center;gap:2px;background:#2f2f2f;border:1px solid var(--line);
     border-radius:6px;height:32px;padding:0 8px;min-width:0;overflow:hidden;white-space:nowrap}
   .crumb{display:flex;align-items:center;gap:6px;color:var(--text);background:none;border:none;
     padding:4px 7px;border-radius:5px;font-size:.82rem;cursor:pointer;font-family:inherit;flex:0 0 auto}
+  .crumb svg{width:14px;height:14px;flex:0 0 auto}
   .crumb:hover{background:rgba(255,255,255,.09)}
   .crumb.cur{cursor:default}
   .crumb.cur:hover{background:none}
   .csep{color:var(--muted);font-size:.7rem;flex:0 0 auto}
   .searchbox{display:flex;align-items:center;gap:6px;background:#2f2f2f;border:1px solid var(--line);
-    border-radius:6px;height:32px;padding:0 10px;width:190px;flex:0 0 auto}
+    border-radius:6px;height:32px;padding:0 10px;width:190px;flex:0 0 auto;color:var(--muted)}
+  .searchbox svg{width:14px;height:14px;flex:0 0 auto}
   .searchbox input{background:none;border:none;outline:none;color:var(--text);font-size:.8rem;width:100%;font-family:inherit}
-  .tools{display:flex;align-items:center;gap:4px;padding:4px 10px;background:var(--bar);border-bottom:1px solid var(--line);flex:0 0 auto;overflow-x:auto;scrollbar-width:none}
+  .tools{display:flex;align-items:center;gap:2px;padding:4px 8px;background:var(--bar);border-bottom:1px solid var(--line);flex:0 0 auto;overflow-x:auto;scrollbar-width:none}
   .tools::-webkit-scrollbar{display:none}
   .tbtn{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:6px;border:none;
     background:transparent;color:#d6d6d6;font-size:.8rem;cursor:pointer;font-family:inherit;white-space:nowrap}
   .tbtn:hover{background:rgba(255,255,255,.08)}
-  .tbtn:disabled{opacity:.35;cursor:default;background:transparent}
+  .tbtn:disabled{opacity:.32;cursor:default;background:transparent}
+  .tbtn svg{width:15px;height:15px;flex:0 0 auto}
   .tsep{width:1px;height:20px;background:var(--line);margin:0 4px;flex:0 0 auto}
   .main{flex:1;display:flex;min-height:0}
   .side{width:230px;flex:0 0 auto;background:var(--side);border-right:1px solid var(--line);
@@ -65,6 +76,7 @@
   .tree-root{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:6px;font-size:.85rem;cursor:pointer}
   .tree-root:hover,.tree-root.on{background:rgba(255,255,255,.08)}
   .tree-root.on{background:rgba(76,194,255,.16);color:var(--accent)}
+  .tree-root svg{width:15px;height:15px}
   .chev{width:16px;text-align:center;color:var(--muted);font-size:.68rem;transition:.15s;flex:0 0 auto}
   .chev.open{transform:rotate(90deg)}
   .tree-child{margin-left:18px}
@@ -72,6 +84,7 @@
     color:#dcdcdc;cursor:pointer;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
   .tree-item:hover{background:rgba(255,255,255,.08)}
   .tree-item.cur{background:rgba(76,194,255,.16);color:var(--accent)}
+  .tree-item svg{width:15px;height:15px;flex:0 0 auto}
   .tree-item span:last-child{overflow:hidden;text-overflow:ellipsis}
   .content{flex:1;min-width:0;display:flex;flex-direction:column;background:var(--win)}
   .list{flex:1;overflow-y:auto;padding:4px 8px 10px}
@@ -81,19 +94,20 @@
   .cols div:hover{color:var(--text)}
   .cols .noc{cursor:default}
   .cols .noc:hover{color:var(--muted)}
-  .row{display:grid;grid-template-columns:1fr 130px 110px 84px;align-items:center;padding:7px 10px;
+  .row{display:grid;grid-template-columns:1fr 130px 110px 84px;align-items:center;padding:6px 10px;
     border-radius:6px;font-size:.84rem;cursor:pointer;gap:0}
   .row:hover{background:var(--row-hover)}
   .row.sel{background:rgba(76,194,255,.18);outline:1px solid rgba(76,194,255,.35)}
   .row .nm{display:flex;align-items:center;gap:9px;min-width:0}
   .row .nm span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .row .fic{flex:0 0 auto;font-size:1.05rem}
+  .row .fic{width:20px;height:20px;flex:0 0 auto}
   .row small{color:var(--muted);font-size:.78rem}
   .row .type,.row .size{color:var(--muted);font-size:.78rem}
   .empty{padding:60px 20px;text-align:center;color:var(--muted);font-size:.85rem}
   .detail{width:250px;flex:0 0 auto;background:var(--side);border-left:1px solid var(--line);
     padding:18px 16px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;position:relative}
-  .detail .big{font-size:3rem;text-align:center;margin:14px 0 6px}
+  .detail .big{display:grid;place-items:center;margin:14px 0 8px}
+  .detail .big svg{width:58px;height:58px}
   .detail h3{margin:0 0 10px;font-size:.92rem;text-align:center;word-break:break-all;font-weight:600}
   .kv{display:flex;justify-content:space-between;gap:10px;font-size:.78rem;padding:4px 0}
   .kv i{font-style:normal;color:var(--muted)}
@@ -103,65 +117,157 @@
     border-radius:6px;border:1px solid rgba(76,194,255,.4);background:rgba(76,194,255,.12);
     color:var(--accent);font-size:.84rem;text-decoration:none;cursor:pointer;font-family:inherit}
   .dlbtn:hover{background:rgba(76,194,255,.22)}
+  .dlbtn svg{width:15px;height:15px}
   .dlbtn.alt{background:transparent;border-color:var(--line);color:#c9d1d9;margin-top:8px}
   .dlbtn.alt:hover{border-color:rgba(76,194,255,.4);color:var(--accent)}
   .status{flex:0 0 auto;display:flex;gap:14px;padding:6px 14px;background:var(--bar);
     border-top:1px solid var(--line);font-size:.75rem;color:var(--muted)}
   .dclose{display:none}
   .menu-btn{display:none}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,14px);opacity:0;
+    background:rgba(40,40,40,.96);border:1px solid var(--line);color:#eee;font-size:.8rem;
+    padding:9px 16px;border-radius:8px;transition:.2s;pointer-events:none;z-index:99;white-space:nowrap}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
   @media (max-width:760px){
     body{padding:0}
     .win{max-width:none;height:100vh;min-height:100vh;border-radius:0;border:none}
+    body.mini{padding:14px 10px}
+    body.mini .win{height:calc(100vh - 28px);border-radius:10px}
     .side{position:fixed;left:0;top:0;bottom:0;z-index:50;transform:translateX(-105%);
       transition:.22s;width:250px;box-shadow:8px 0 30px rgba(0,0,0,.5);padding-top:14px}
     .side.show{transform:none}
     .side-mask{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:40;display:none}
     .side-mask.show{display:block}
     .menu-btn{display:grid}
-    .searchbox{width:120px}
+    .searchbox{width:118px}
     .detail{position:fixed;left:0;right:0;bottom:0;z-index:60;width:auto;max-height:62%;
       border-radius:14px 14px 0 0;transform:translateY(105%);transition:.22s;
       border:1px solid var(--line);box-shadow:0 -10px 40px rgba(0,0,0,.5)}
     .detail.show{transform:none}
-    .dclose{display:block!important;position:absolute;right:10px;top:10px;width:30px;height:30px;
+    .dclose{display:grid;place-items:center;position:absolute;right:10px;top:10px;width:30px;height:30px;
       border-radius:50%;background:rgba(255,255,255,.08);border:none;color:#ddd;font-size:1rem}
     .cols,.row{grid-template-columns:1fr 92px 74px}
     .c-type,.r-type{display:none}
     .crumb{font-size:.78rem}
+    .tbtns button{width:42px}
     .tab{padding:0 10px}
-    .tbtns span{width:40px}
   }
 </style>
 </head>
 <body>
+
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-folder" viewBox="0 0 24 24">
+    <path d="M2 6.6A2.6 2.6 0 0 1 4.6 4h4.1c.55 0 1.08.22 1.47.61L11.9 6.3h7.5A2.6 2.6 0 0 1 22 8.9v1.2H2z" fill="#FFCE4A"/>
+    <path d="M2 9.6h20v7.8A2.6 2.6 0 0 1 19.4 20H4.6A2.6 2.6 0 0 1 2 17.4z" fill="#FFBA1F"/>
+  </symbol>
+  <symbol id="i-iso" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="9.2" fill="#B9C6D6"/>
+    <circle cx="12" cy="12" r="9.2" fill="none" stroke="#93A4B8" stroke-width=".9"/>
+    <circle cx="12" cy="12" r="3.5" fill="#8FA0B6"/>
+    <circle cx="12" cy="12" r="1.5" fill="#EAF1FA"/>
+    <path d="M5 7.2a8.4 8.4 0 0 1 4.8-4.1" stroke="#fff" stroke-width="1.3" fill="none" opacity=".7" stroke-linecap="round"/>
+    <path d="M15.5 19a8.4 8.4 0 0 0 3.7-3.4" stroke="#7b8a9c" stroke-width="1.1" fill="none" opacity=".5" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-app" viewBox="0 0 24 24">
+    <rect x="2.5" y="3" width="19" height="18" rx="3" fill="#2E7BE0"/>
+    <rect x="6" y="7" width="12" height="10" rx="1.6" fill="#FFFFFF" opacity=".93"/>
+    <path d="M6 9.8h12" stroke="#2E7BE0" stroke-width="1"/>
+  </symbol>
+  <symbol id="i-txt" viewBox="0 0 24 24">
+    <path d="M5.5 3h8.2L19 8.3V21H5.5z" fill="#EDF2F9"/>
+    <path d="M13.7 3L19 8.3h-5.3z" fill="#C2CFDF"/>
+    <g fill="#9FAFBF">
+      <rect x="8" y="11.4" width="8.5" height="1.2" rx=".6"/>
+      <rect x="8" y="14.2" width="8.5" height="1.2" rx=".6"/>
+      <rect x="8" y="17" width="5.6" height="1.2" rx=".6"/>
+    </g>
+  </symbol>
+  <symbol id="i-zip" viewBox="0 0 24 24">
+    <rect x="4" y="3" width="16" height="18" rx="2.4" fill="#F2C14E"/>
+    <rect x="10.5" y="3" width="3" height="11" fill="#B98A22" opacity=".5"/>
+    <path d="M10.5 6h3M10.5 9h3M10.5 12h3" stroke="#7C5B12" stroke-width="1"/>
+    <rect x="9.6" y="13.8" width="4.8" height="4.4" rx="1" fill="#8A6516"/>
+  </symbol>
+  <symbol id="i-img" viewBox="0 0 24 24">
+    <rect x="3" y="4.5" width="18" height="15" rx="2.4" fill="#7FCB8F"/>
+    <circle cx="8.6" cy="9.6" r="1.7" fill="#FFF6C9"/>
+    <path d="M4 17.4l4.6-5 3.4 3.6 3-3.2 5 4.6v.4A1.6 1.6 0 0 1 18.4 19H5.6A1.6 1.6 0 0 1 4 17.4z" fill="#3E9B57"/>
+  </symbol>
+  <symbol id="i-pdf" viewBox="0 0 24 24">
+    <path d="M5.5 3h8.2L19 8.3V21H5.5z" fill="#F4E4E2"/>
+    <path d="M13.7 3L19 8.3h-5.3z" fill="#D9B9B5"/>
+    <rect x="8" y="12" width="8" height="4.6" rx="1" fill="#D64545"/>
+  </symbol>
+  <symbol id="i-slide" viewBox="0 0 24 24">
+    <rect x="3" y="4.5" width="18" height="13" rx="2" fill="#E8834A"/>
+    <rect x="5.6" y="7.2" width="12.8" height="7.6" rx="1" fill="#FFF3EA"/>
+    <path d="M12 17.5V21" stroke="#B8642F" stroke-width="1.4"/>
+  </symbol>
+  <symbol id="i-file" viewBox="0 0 24 24">
+    <path d="M5.5 3h8.2L19 8.3V21H5.5z" fill="#E5EBF3"/>
+    <path d="M13.7 3L19 8.3h-5.3z" fill="#BFCCDB"/>
+  </symbol>
+  <symbol id="i-pc" viewBox="0 0 24 24">
+    <rect x="3" y="4.6" width="18" height="12" rx="1.8" fill="none" stroke="#8fb8e8" stroke-width="1.7"/>
+    <path d="M9 20h6M12 16.6V20" stroke="#8fb8e8" stroke-width="1.7" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-search" viewBox="0 0 24 24">
+    <circle cx="10.6" cy="10.6" r="6.1" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <path d="M15.3 15.3L20.4 20.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-dl" viewBox="0 0 24 24">
+    <path d="M12 3.5v11M7.6 10.4L12 14.8l4.4-4.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M4.5 18.5h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-sort" viewBox="0 0 24 24">
+    <path d="M7 4.5v15M3.6 8L7 4.6 10.4 8M17 19.5v-15M13.6 16L17 19.4 20.4 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-cut" viewBox="0 0 24 24">
+    <circle cx="7" cy="18" r="2.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <circle cx="17" cy="18" r="2.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M8.6 15.9L16 4M15.4 15.9L8 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24">
+    <rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M15.5 5.5H6a2 2 0 0 0-2 2V16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-del" viewBox="0 0 24 24">
+    <path d="M4.5 6.5h15M9.5 6.5V4.6h5v1.9M6.5 6.5l1 13h9l1-13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24">
+    <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </symbol>
+</svg>
+
 <div class="win">
 
   <div class="titlebar">
     <div class="tabs">
-      <div class="tab">📁 Git Drive <span class="x">✕</span></div>
+      <div class="tab"><svg><use href="#i-folder"/></svg> Git Drive <span class="x">✕</span></div>
       <div class="newtab">＋</div>
     </div>
-    <div class="tbtns"><span>-</span><span>☐</span><span class="close">✕</span></div>
+    <div class="tbtns" id="tbtns"></div>
   </div>
 
   <div class="nav">
-    <button class="nbtn menu-btn" id="sideBtn">☰</button>
+    <button class="nbtn menu-btn" id="sideBtn" title="目录树">☰</button>
     <button class="nbtn" id="backBtn" title="后退">←</button>
     <button class="nbtn" id="homeBtn" title="回到根目录">⌂</button>
     <div class="crumbs" id="crumbs"></div>
     <button class="nbtn" id="refreshBtn" title="刷新">⟳</button>
-    <div class="searchbox">🔍<input id="q" type="search" placeholder="搜索 Git Drive" autocomplete="off"></div>
+    <div class="searchbox"><svg><use href="#i-search"/></svg><input id="q" type="search" placeholder="搜索 Git Drive" autocomplete="off"></div>
   </div>
 
   <div class="tools">
-    <button class="tbtn" disabled>⬇ 下载</button>
-    <button class="tbtn" disabled>✂ 剪切</button>
-    <button class="tbtn" disabled>📋 复制</button>
-    <button class="tbtn" disabled>🗑 删除</button>
+    <button class="tbtn" disabled><svg><use href="#i-dl"/></svg>下载</button>
+    <button class="tbtn" disabled><svg><use href="#i-cut"/></svg>剪切</button>
+    <button class="tbtn" disabled><svg><use href="#i-copy"/></svg>复制</button>
+    <button class="tbtn" disabled><svg><use href="#i-del"/></svg>删除</button>
     <div class="tsep"></div>
-    <button class="tbtn" id="sortBtn" title="切换排序字段">↕ 排序</button>
+    <button class="tbtn" id="sortBtn"><svg><use href="#i-sort"/></svg>排序</button>
     <span style="flex:1"></span>
-    <button class="tbtn" disabled>⊕ 新建</button>
+    <button class="tbtn" disabled><svg><use href="#i-plus"/></svg>新建</button>
   </div>
 
   <div class="main">
@@ -181,36 +287,35 @@
   <div class="status" id="status"></div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
 (function(){
 "use strict";
 var DATA = null, cur = "", sel = null, sortKey = "name", sortDir = 1, expanded = {};
 var $ = function(id){ return document.getElementById(id); };
+var IS_MINI = /[?&]mini=1/.test(location.search);
+var PG_HOME = "../";
+if(IS_MINI) document.body.classList.add("mini");
+
 var TYPE = {
-  folder:"文件文件夹", iso:"光盘映像文件", exe:"应用程序", msi:"安装程序包",
+  iso:"光盘映像文件", img:"磁盘映像", vhd:"虚拟磁盘", exe:"应用程序", msi:"安装程序包",
   zip:"压缩文件", "7z":"7z 压缩包", rar:"RAR 压缩包", gz:"GZip 压缩包",
   txt:"文本文档", md:"Markdown 文档", pdf:"PDF 文档",
   ppt:"演示文稿", pptx:"演示文稿", doc:"文档", docx:"文档",
-  png:"图像", jpg:"图像", jpeg:"图像", webp:"图像", vhd:"虚拟磁盘", img:"磁盘映像"
+  png:"图像", jpg:"图像", jpeg:"图像", webp:"图像"
 };
-function icon(n, isDir){
-  if(isDir) return "📁";
-  var e = (String(n).split(".").pop()||"").toLowerCase();
-  if(e==="iso"||e==="img"||e==="vhd") return "💿";
-  if(e==="exe"||e==="msi") return "⚙️";
-  if(e==="zip"||e==="7z"||e==="rar"||e==="gz") return "🗜️";
-  if(e==="txt"||e==="md") return "📄";
-  if(e==="pdf") return "📕";
-  if(e==="ppt"||e==="pptx") return "📊";
-  if(e==="doc"||e==="docx") return "📘";
-  if(e==="png"||e==="jpg"||e==="jpeg"||e==="webp") return "🖼️";
-  return "📦";
+var ICON_MAP = {
+  iso:"i-iso", img:"i-iso", vhd:"i-iso", exe:"i-app", msi:"i-app",
+  zip:"i-zip", "7z":"i-zip", rar:"i-zip", gz:"i-zip",
+  txt:"i-txt", md:"i-txt", pdf:"i-pdf", ppt:"i-slide", pptx:"i-slide",
+  doc:"i-txt", docx:"i-txt", png:"i-img", jpg:"i-img", jpeg:"i-img", webp:"i-img"
+};
+function ext(n){ return (String(n).split(".").pop()||"").toLowerCase(); }
+function svgIcon(id, cls){
+  return '<svg class="'+(cls||"")+'" viewBox="0 0 24 24" aria-hidden="true"><use href="#'+id+'"/></svg>';
 }
-function ftype(n, isDir){
-  if(isDir) return "文件文件夹";
-  var e=(String(n).split(".").pop()||"").toLowerCase();
-  return TYPE[e] || (e ? e.toUpperCase()+" 文件" : "文件");
-}
+function ftype(n, isDir){ return isDir ? "文件文件夹" : (TYPE[ext(n)] || (ext(n) ? ext(n).toUpperCase()+" 文件" : "文件")); }
 function fmtSize(n){
   if(n==null) return "—";
   var u=["B","KB","MB","GB","TB"],i=0,v=n;
@@ -229,6 +334,65 @@ function href(f,kind){
 var touch = window.matchMedia("(hover: none)").matches;
 var hist = [];
 
+/* ===== 窗口按钮 ===== */
+var WIC = {
+  min:'<svg viewBox="0 0 12 12"><path d="M2.2 6h7.6" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/></svg>',
+  max:'<svg viewBox="0 0 12 12"><rect x="2.4" y="2.4" width="7.2" height="7.2" rx="1.1" fill="none" stroke="currentColor" stroke-width="1.15"/></svg>',
+  restore:'<svg viewBox="0 0 12 12"><rect x="2.2" y="4.2" width="5.6" height="5.6" rx="1" fill="none" stroke="currentColor" stroke-width="1.05"/><path d="M4.4 4.2V3.1a1 1 0 0 1 1-1h4.3a1 1 0 0 1 1 1v4.3a1 1 0 0 1-1 1H8.9" fill="none" stroke="currentColor" stroke-width="1.05"/></svg>',
+  close:'<svg viewBox="0 0 12 12"><path d="M2.6 2.6l6.8 6.8M9.4 2.6l-6.8 6.8" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/></svg>'
+};
+function toast(msg){
+  var t = $("toast"); if(!t) return;
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(toast._t);
+  toast._t = setTimeout(function(){ t.classList.remove("show"); }, 2400);
+}
+function onWindowed(){
+  var w = 960, h = 660;
+  var sw = (window.screen && screen.availWidth) || 1200;
+  var sh = (window.screen && screen.availHeight) || 800;
+  h = Math.min(h, sh - 120);
+  var left = Math.max(0, Math.round((sw - w)/2));
+  var top = Math.max(0, Math.round((sh - h)/2));
+  var url = location.pathname + "?mini=1";
+  var win = window.open(url, "gitdrive_window",
+    "width="+w+",height="+h+",left="+left+",top="+top+",menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes");
+  if(!win || win.closed){ toast("新窗口被浏览器拦截，已在本页切换为窗口模式"); location.href = url; }
+}
+function onMaximize(){
+  try { window.close(); } catch(e){}
+  setTimeout(function(){ location.replace(location.pathname); }, 420);
+}
+function onMinimize(){
+  try { localStorage.setItem("gh_pan_min", "1"); } catch(e){}
+  location.href = PG_HOME;
+}
+function onClose(){ location.href = PG_HOME; }
+function renderWinButtons(){
+  var bar = $("tbtns");
+  if(IS_MINI){
+    bar.innerHTML =
+      '<button title="最大化（回到原标签页）" data-act="max">'+WIC.max+'</button>' +
+      '<button title="最小化到主页" data-act="min">'+WIC.min+'</button>' +
+      '<button class="cls" title="关闭（返回主页）" data-act="close">'+WIC.close+'</button>';
+  } else {
+    bar.innerHTML =
+      '<button title="窗口化（弹出小窗）" data-act="win">'+WIC.restore+'</button>' +
+      '<button title="最小化到主页" data-act="min">'+WIC.min+'</button>' +
+      '<button class="cls" title="关闭（返回主页）" data-act="close">'+WIC.close+'</button>';
+  }
+  bar.querySelectorAll("button").forEach(function(b){
+    b.addEventListener("click", function(){
+      var a = b.getAttribute("data-act");
+      if(a==="win") onWindowed();
+      else if(a==="max") onMaximize();
+      else if(a==="min") onMinimize();
+      else if(a==="close") onClose();
+    });
+  });
+}
+renderWinButtons();
+
 /* ===== 目录树 ===== */
 function buildTree(){
   var root = {};
@@ -246,7 +410,7 @@ function renderTree(){
   var root = buildTree();
   var html = '<div class="tree-root'+(cur===""?" on":"")+'" data-go="">' +
     '<span class="chev'+(Object.keys(root).length?" open":"")+'">▸</span>' +
-    '<span>🪟</span><b>Git Drive</b></div><div class="tree-child">';
+    svgIcon("i-pc") + '<b>Git Drive</b></div><div class="tree-child">';
   html += treeHTML(root);
   html += "</div>";
   $("tree").innerHTML = html;
@@ -269,7 +433,7 @@ function treeHTML(node){
     var n = node[k], isOpen = !!expanded[n.__key];
     out += '<div class="tree-item'+(cur===n.__key?" cur":"")+'" data-go="'+esc(n.__key)+'">'+
       '<span class="chev'+(isOpen?" open":"")+'" data-exp="'+esc(n.__key)+'">▸</span>'+
-      '<span>📁</span><span>'+esc(k)+'</span></div>';
+      svgIcon("i-folder") + '<span>'+esc(k)+'</span></div>';
     if(isOpen){
       var kids = treeHTML(n.__kids);
       if(kids) out += '<div class="tree-child">'+kids+"</div>";
@@ -333,7 +497,7 @@ function renderList(){
     var isDir = !!f.isDir;
     var key = isDir && f.__key ? f.__key : (f.dir||"")+"/"+f.name;
     html += '<div class="row'+(sel===key?" sel":"")+'" data-key="'+esc(key)+'">'+
-      '<div class="nm"><span class="fic">'+icon(f.name,isDir)+'</span><span>'+esc(f.name)+'</span></div>'+
+      '<div class="nm">'+svgIcon(isDir?"i-folder":(ICON_MAP[ext(f.name)]||"i-file"),"fic")+'<span>'+esc(f.name)+'</span></div>'+
       '<small>'+esc(f.mtime||"")+'</small>'+
       '<div class="type r-type">'+ftype(f.name,isDir)+'</div>'+
       '<div class="size">'+(isDir?"":fmtSize(f.size))+'</div></div>';
@@ -348,7 +512,7 @@ function renderList(){
     });
   });
   $("list").querySelectorAll(".row").forEach(function(r, idx){
-    var f = rows[rows.length - $("list").querySelectorAll(".row").length + idx];
+    var f = rows[idx];
     r.addEventListener("click", function(){
       if(f.isDir && touch){ go(f.__key); return; }
       sel = r.getAttribute("data-key");
@@ -370,7 +534,7 @@ function showDetail(f){
   if(!f || f.isDir){
     var all = DATA.files||[];
     var dirFiles = f ? all.filter(function(x){ return (x.dir||"").indexOf(f.__key||"")===0; }) : all;
-    el.innerHTML = '<div class="big">'+(f?"📁":"🪟")+'</div><h3>'+(f?esc(f.name):"Git Drive")+'</h3>'+
+    el.innerHTML = '<div class="big">'+svgIcon(f?"i-folder":"i-pc")+'</div><h3>'+(f?esc(f.name):"Git Drive")+'</h3>'+
       '<div class="kv"><i>类型</i><b>'+(f?"文件文件夹":"云存储")+'</b></div>'+
       '<div class="kv"><i>'+(f?"包含项目":"项目总数")+'</i><b>'+dirFiles.length+'</b></div>'+
       '<div class="kv"><i>总体积</i><b>'+fmtSize(dirFiles.reduce(function(a,x){return a+(x.size||0);},0))+'</b></div>'+
@@ -380,13 +544,13 @@ function showDetail(f){
     return;
   }
   var main = href(f,"main"), back = href(f,"backup");
-  el.innerHTML = '<div class="big">'+icon(f.name,false)+'</div><h3>'+esc(f.name)+'</h3>'+
+  el.innerHTML = '<div class="big">'+svgIcon(ICON_MAP[ext(f.name)]||"i-file")+'</div><h3>'+esc(f.name)+'</h3>'+
     '<h4>详细信息</h4>'+
     '<div class="kv"><i>类型</i><b>'+ftype(f.name,false)+'</b></div>'+
     '<div class="kv"><i>大小</i><b>'+fmtSize(f.size)+'</b></div>'+
     '<div class="kv"><i>修改日期</i><b>'+esc(f.mtime||"—")+'</b></div>'+
     '<div class="kv"><i>位置</i><b>'+esc(f.dir||"Git Drive")+'</b></div>'+
-    (main?'<a class="dlbtn" href="'+esc(main)+'" download>⬇ 主线下载</a>':"")+
+    (main?'<a class="dlbtn" href="'+esc(main)+'" download>'+svgIcon("i-dl")+' 主线下载</a>':"")+
     (back?'<a class="dlbtn alt" href="'+esc(back)+'" download>备用链接（沙箱网盘）</a>':"");
   if(touch) $("detail").classList.add("show");
 }
@@ -395,7 +559,7 @@ $("dclose").addEventListener("click", function(){ $("detail").classList.remove("
 /* ===== 面包屑 ===== */
 function renderCrumbs(){
   var parts = cur ? cur.split("/") : [];
-  var html = '<button class="crumb'+(cur===""?" cur":"")+'" data-go="">📁 Git Drive</button>';
+  var html = '<button class="crumb'+(cur===""?" cur":"")+'" data-go="">'+svgIcon("i-folder")+'Git Drive</button>';
   var acc = "";
   parts.forEach(function(p){
     acc += (acc?"/":"")+p;
@@ -435,12 +599,7 @@ $("sortBtn").addEventListener("click", function(){
   sortKey = sortKey==="name"?"mtime":sortKey==="mtime"?"size":"name";
   renderList();
 });
-$("q").addEventListener("input", function(){
-  sel=null;
-  renderList();
-  var q=($("q").value||"").trim();
-  if(q) renderCrumbs(); else renderCrumbs();
-});
+$("q").addEventListener("input", function(){ sel=null; renderList(); });
 
 /* ===== 加载 ===== */
 function load(bust){
