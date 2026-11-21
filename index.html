@@ -48,6 +48,51 @@
       }
     }
     </script>
+    <style>
+        /* Git Drive 最小化后的悬浮球 */
+        .pan-ball {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            display: none;
+            align-items: center;
+            gap: 9px;
+            padding: 9px 15px 9px 11px;
+            border-radius: 999px;
+            background: rgba(26, 32, 44, .94);
+            border: 1px solid rgba(76, 194, 255, .38);
+            box-shadow: 0 12px 34px rgba(0, 0, 0, .5);
+            color: #e8f3ff;
+            text-decoration: none;
+            font-size: .82rem;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            transition: transform .18s, border-color .18s;
+        }
+        .pan-ball.show { display: flex; animation: pb-in .28s ease-out; }
+        .pan-ball:hover { transform: translateY(-2px); border-color: rgba(76, 194, 255, .8); }
+        .pan-ball svg { width: 24px; height: 24px; flex: 0 0 auto; }
+        .pan-ball .pb-t { line-height: 1.2; }
+        .pan-ball .pb-t b { display: block; font-size: .8rem; font-weight: 600; }
+        .pan-ball .pb-t i { display: block; font-style: normal; font-size: .68rem; color: #8fa3b8; }
+        .pan-ball::after {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            border-radius: 999px;
+            border: 1px solid rgba(76, 194, 255, .5);
+            opacity: 0;
+            animation: pb-pulse 2.6s ease-out infinite;
+        }
+        @keyframes pb-in { from { opacity: 0; transform: translateY(14px) scale(.9); } to { opacity: 1; transform: none; } }
+        @keyframes pb-pulse {
+            0% { opacity: .5; transform: scale(1); }
+            70%, 100% { opacity: 0; transform: scale(1.18); }
+        }
+        @media (max-width: 480px) {
+            .pan-ball { right: 12px; bottom: 12px; padding: 8px 13px 8px 10px; }
+        }
+    </style>
 </head>
 <body>
 
@@ -143,8 +188,29 @@
         <p>本站内容仅供个人学习交流；如有侵权，请联系 <a href="mailto:ineedhelpofweb@163.com">ineedhelpofweb@163.com</a>，核实后即删。</p>
     </footer>
 
+    <a id="pan-ball" class="pan-ball" href="./pan/" aria-label="恢复 Git Drive 窗口">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M2 6.6A2.6 2.6 0 0 1 4.6 4h4.1c.55 0 1.08.22 1.47.61L11.9 6.3h7.5A2.6 2.6 0 0 1 22 8.9v1.2H2z" fill="#FFCE4A"/>
+            <path d="M2 9.6h20v7.8A2.6 2.6 0 0 1 19.4 20H4.6A2.6 2.6 0 0 1 2 17.4z" fill="#FFBA1F"/>
+        </svg>
+        <span class="pb-t"><b>Git Drive</b><i>已最小化 · 点击恢复</i></span>
+    </a>
+
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Git Drive 最小化后，在主页显示恢复用的悬浮球
+        (function () {
+            var ball = document.getElementById('pan-ball');
+            if (!ball) return;
+            var KEY = 'gh_pan_min';
+            try {
+                if (localStorage.getItem(KEY) === '1') ball.classList.add('show');
+            } catch (e) {}
+            ball.addEventListener('click', function () {
+                try { localStorage.removeItem(KEY); } catch (e) {}
+            });
+        })();
 
         (function () {
             var btn = document.getElementById('qq-group');
