@@ -1,31 +1,31 @@
 {
-  "updated": "2026-11-17",
-  "generated": 1794927487,
-  "source": "sandbox",
+  "updated": "2026-11-21",
+  "generated": 1795263640,
+  "source": "github-releases",
   "files": [
     {
-      "name": "readme.txt",
-      "dir": "",
-      "size": 44,
+      "name": "xp_activate32.exe",
+      "dir": "Windows 激活工具/xp_activate32",
+      "size": 326656,
       "mtime": "2026-11-14",
-      "url": "https://pan.geekhub.dpdns.org",
-      "backup": ""
+      "url": "https://github.com/zzh-hui/Geek-Hub/releases/download/pan-files/xp_activate32.exe",
+      "backup": "https://pan.geekhub.dpdns.org/"
     },
     {
       "name": "Readme.txt",
       "dir": "Windows 激活工具/xp_activate32",
       "size": 1903,
       "mtime": "2026-11-14",
-      "url": "https://pan.geekhub.dpdns.org",
-      "backup": ""
+      "url": "https://github.com/zzh-hui/Geek-Hub/releases/download/pan-files/xp_activate32_readme.txt",
+      "backup": "https://pan.geekhub.dpdns.org/"
     },
     {
-      "name": "xp_activate32.exe",
-      "dir": "Windows 激活工具/xp_activate32",
-      "size": 326656,
+      "name": "readme.txt",
+      "dir": "",
+      "size": 44,
       "mtime": "2026-11-14",
-      "url": "https://pan.geekhub.dpdns.org",
-      "backup": ""
+      "url": "https://github.com/zzh-hui/Geek-Hub/releases/download/pan-files/site_readme.txt",
+      "backup": "https://pan.geekhub.dpdns.org/"
     }
   ]
 }
