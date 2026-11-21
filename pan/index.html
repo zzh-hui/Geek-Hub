@@ -194,7 +194,8 @@
   function href(f, kind){
     var base = kind === "backup" ? f.backup : f.url;
     if(!base) return "";
-    if(/^https?:\/\//i.test(base)) return base.replace(/\/+$/, "") + "/" + encPath(f.dir ? f.dir + "/" + f.name : f.name);
+    // 以 / 结尾的当作目录前缀，自动拼文件路径；否则视为完整直链
+    if(/\/$/.test(base)) return base + encPath(f.dir ? f.dir + "/" + f.name : f.name);
     return base;
   }
 
