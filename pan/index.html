@@ -359,9 +359,41 @@ function onWindowed(){
     "width="+w+",height="+h+",left="+left+",top="+top+",menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes");
   if(!win || win.closed){ toast("新窗口被浏览器拦截，已在本页切换为窗口模式"); location.href = url; }
 }
+function isTouchScreen(){
+  try { return window.matchMedia("(pointer:coarse)").matches || window.innerWidth < 760; }
+  catch(e){ return window.innerWidth < 760; }
+}
 function onMaximize(){
+  var full = location.pathname;   // 去掉 ?mini=1，即全屏版
+  // 手机端：新标签无法由脚本可靠关闭，直接在本标签原地变全屏最稳
+  if(isTouchScreen()){ location.replace(full); return; }
+
+  // 判断"打开我的那个标签"本身是不是全屏网盘
+  var op = null, opIsPan = false;
+  try { op = window.opener; } catch(e){ op = null; }
+  if(op && !op.closed){
+    try { opIsPan = /\/pan\/?$/.test(op.location.pathname || ""); } catch(e){ opIsPan = false; }
+  }
+
+  if(opIsPan){
+    // 原标签就是全屏网盘：把焦点交回去，再关掉这个小窗
+    try { op.focus(); } catch(e){}
+    try { window.close(); } catch(e){}
+    setTimeout(function(){ location.replace(full); }, 400);   // 关不掉就原地全屏
+    return;
+  }
+
+  // 没有可用的全屏网盘标签（外部页打开的、或直接输网址进的）：先开一个，再关自己
+  var w = null;
+  try { w = window.open(full, "_blank"); } catch(e){ w = null; }
+  if(!w){ location.replace(full); return; }
+  try { w.focus(); } catch(e){}
   try { window.close(); } catch(e){}
-  setTimeout(function(){ location.replace(location.pathname); }, 420);
+  setTimeout(function(){
+    // 还活着说明本窗口没被关掉：撤掉新开的标签，本页切全屏，避免留下两个
+    try { if(w && !w.closed) w.close(); } catch(e){}
+    location.replace(full);
+  }, 450);
 }
 function onMinimize(){
   try { localStorage.setItem("gh_pan_min", "1"); } catch(e){}
@@ -372,7 +404,7 @@ function renderWinButtons(){
   var bar = $("tbtns");
   if(IS_MINI){
     bar.innerHTML =
-      '<button title="最大化（回到原标签页）" data-act="max">'+WIC.max+'</button>' +
+      '<button title="最大化（回到全屏网盘）" data-act="max">'+WIC.max+'</button>' +
       '<button title="最小化到主页" data-act="min">'+WIC.min+'</button>' +
       '<button class="cls" title="关闭（返回主页）" data-act="close">'+WIC.close+'</button>';
   } else {
