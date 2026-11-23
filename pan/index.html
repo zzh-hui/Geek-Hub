@@ -152,6 +152,60 @@
     .tbtns button{width:42px}
     .tab{padding:0 10px}
   }
+
+  /* ===== 管理员 / 模态框 / 右键菜单 / 多选 ===== */
+  .tbtn.adm-on{color:#4cc2ff;border-color:rgba(76,194,255,.4)}
+  .gd-modal{position:fixed;inset:0;z-index:80;background:rgba(2,6,23,.72);
+    display:flex;align-items:center;justify-content:center;padding:16px}
+  .gd-modal[hidden]{display:none}
+  .gd-box{background:#1c1f26;border:1px solid rgba(255,255,255,.12);border-radius:12px;
+    width:100%;max-width:420px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  .gd-box.gd-wide{max-width:880px}
+  .gd-mhead{display:flex;align-items:center;padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .gd-mhead b{font-size:.9rem;color:#f1f5f9}
+  .gd-x{margin-left:auto;background:none;border:none;color:#9aa7b8;font-size:1rem;cursor:pointer;
+    padding:3px 8px;border-radius:6px}
+  .gd-x:hover{background:rgba(255,255,255,.08);color:#fff}
+  .gd-mbody{padding:14px;overflow:auto;font-size:.85rem;color:#c9d4e2}
+  .gd-mbody input{width:100%;box-sizing:border-box;margin-bottom:10px;background:#12151b;
+    border:1px solid rgba(255,255,255,.14);border-radius:8px;color:#eef2f8;padding:9px 12px;font-size:.9rem}
+  .gd-mbody input:focus{outline:none;border-color:#4cc2ff}
+  .gd-err{color:#f87171;font-size:.8rem;margin:0 0 8px}
+  .gd-primary{display:inline-block;background:#0a84ff;color:#fff;border:none;border-radius:8px;
+    padding:9px 18px;font-size:.88rem;cursor:pointer;text-decoration:none}
+  .gd-primary:hover{background:#2b97ff}
+  .gd-tip{color:#6b7a8d;font-size:.74rem;line-height:1.7;margin:10px 0 0}
+  .gd-mfoot{padding:10px 14px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:flex-end}
+  .gd-prevbody pre{white-space:pre-wrap;word-break:break-all;background:#12151b;
+    border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:12px;max-height:56vh;
+    overflow:auto;font-size:.8rem;color:#dfe7f1;margin:0}
+  .gd-prevbody img{max-width:100%;max-height:56vh;border-radius:8px;display:block;margin:0 auto}
+  .gd-prevbody iframe{width:100%;height:58vh;border:0;border-radius:8px;background:#fff}
+  .gd-ctx{position:fixed;z-index:90;background:#252830;border:1px solid rgba(255,255,255,.14);
+    border-radius:10px;padding:5px;min-width:170px;box-shadow:0 14px 40px rgba(0,0,0,.55)}
+  .gd-ctx[hidden]{display:none}
+  .gd-ctx button{display:flex;align-items:center;gap:9px;width:100%;background:none;border:none;
+    color:#dbe4ee;font-size:.83rem;padding:8px 12px;border-radius:7px;cursor:pointer;text-align:left}
+  .gd-ctx button:hover{background:rgba(76,194,255,.15);color:#fff}
+  .gd-ctx button.danger:hover{background:rgba(248,113,113,.15);color:#fca5a5}
+  .gd-ctx .sep{height:1px;background:rgba(255,255,255,.09);margin:4px 6px}
+  .gd-multi{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:70;
+    background:#252830;border:1px solid rgba(76,194,255,.4);border-radius:30px;
+    padding:9px 18px;display:flex;align-items:center;gap:14px;font-size:.85rem;color:#dbe4ee;
+    box-shadow:0 10px 34px rgba(0,0,0,.5)}
+  .gd-multi[hidden]{display:none}
+  .gd-multi button{background:none;border:1px solid rgba(255,255,255,.2);color:#dbe4ee;
+    border-radius:16px;padding:5px 14px;font-size:.8rem;cursor:pointer}
+  .gd-multi button:hover{border-color:#4cc2ff;color:#fff}
+  .gd-multi button.danger:hover{border-color:#f87171;color:#fca5a5}
+  .row.sel2{background:rgba(76,194,255,.14);outline:1px solid rgba(76,194,255,.3)}
+  .sha-line{font-family:ui-monospace,Consolas,monospace;font-size:.72rem;color:#8fa3b8;
+    word-break:break-all;line-height:1.6}
+  .prevbtn{display:inline-flex;align-items:center;gap:6px;background:rgba(76,194,255,.12);
+    color:#4cc2ff;border:1px solid rgba(76,194,255,.35);border-radius:8px;padding:8px 14px;
+    font-size:.85rem;cursor:pointer;margin-bottom:8px}
+  .prevbtn:hover{background:rgba(76,194,255,.22)}
 </style>
 </head>
 <body>
@@ -238,6 +292,10 @@
   <symbol id="i-plus" viewBox="0 0 24 24">
     <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
   </symbol>
+  <symbol id="i-key" viewBox="0 0 24 24">
+    <circle cx="8" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.7"/>
+    <path d="M12 12h9M17 12v4M20 12v3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+  </symbol>
 </svg>
 
 <div class="win">
@@ -267,6 +325,7 @@
     <div class="tsep"></div>
     <button class="tbtn" id="sortBtn"><svg><use href="#i-sort"/></svg>排序</button>
     <span style="flex:1"></span>
+    <button class="tbtn" id="admBtn" title="管理员登录后可管理文件"><svg><use href="#i-key"/></svg><span id="admTxt">管理员登录</span></button>
     <button class="tbtn" disabled><svg><use href="#i-plus"/></svg>新建</button>
   </div>
 
@@ -289,10 +348,41 @@
 
 <div class="toast" id="toast"></div>
 
+<!-- 管理员登录 -->
+<div class="gd-modal" id="loginModal" hidden>
+  <div class="gd-box">
+    <div class="gd-mhead"><b>管理员登录</b><button class="gd-x" id="loginClose">✕</button></div>
+    <div class="gd-mbody">
+      <input id="admUser" placeholder="用户名" autocomplete="username">
+      <input id="admPass" type="password" placeholder="密码" autocomplete="current-password">
+      <p class="gd-err" id="loginErr" hidden></p>
+      <button class="gd-primary" id="loginGo">登录</button>
+      <p class="gd-tip">登录后：右键文件可改名/删除（进回收站）、可批量删除、详情面板显示实时下载次数与 SHA256</p>
+    </div>
+  </div>
+</div>
+
+<!-- 在线预览 -->
+<div class="gd-modal" id="prevModal" hidden>
+  <div class="gd-box gd-wide">
+    <div class="gd-mhead"><b id="prevTitle">预览</b><button class="gd-x" id="prevClose">✕</button></div>
+    <div class="gd-mbody gd-prevbody" id="prevBody"></div>
+    <div class="gd-mfoot"><a class="gd-primary" id="prevDl" download>⬇ 下载原文件</a></div>
+  </div>
+</div>
+
+<div id="ctxMenu" class="gd-ctx" hidden></div>
+<div id="multiBar" class="gd-multi" hidden></div>
+
 <script>
 (function(){
 "use strict";
 var DATA = null, cur = "", sel = null, sortKey = "name", sortDir = 1, expanded = {};
+var multi = {};   // 管理员多选集合 key -> file
+var PAN_API = location.hostname === "127.0.0.1" ? "http://127.0.0.1:8099" : "https://pan.geekhub.dpdns.org";
+var ADM_KEY = "gd_admin_auth";
+var ADM = "", IS_ADM = false;
+try { ADM = sessionStorage.getItem(ADM_KEY) || ""; } catch(e){}
 var $ = function(id){ return document.getElementById(id); };
 var IS_MINI = /[?&]mini=1/.test(location.search);
 var PG_HOME = "../";
@@ -548,8 +638,15 @@ function renderList(){
   });
   $("list").querySelectorAll(".row").forEach(function(r, idx){
     var f = rows[idx];
-    r.addEventListener("click", function(){
-      if(f.isDir && touch){ go(f.__key); return; }
+    r.addEventListener("click", function(e){
+      if(f.isDir && touch && !e.ctrlKey && !e.metaKey){ go(f.__key); return; }
+      if(IS_ADM && (e.ctrlKey || e.metaKey)){
+        var k = r.getAttribute("data-key");
+        if(multi[k]){ delete multi[k]; r.classList.remove("sel2"); }
+        else { multi[k] = f; r.classList.add("sel2"); }
+        renderMultiBar();
+        return;
+      }
       sel = r.getAttribute("data-key");
       $("list").querySelectorAll(".row").forEach(function(x){x.classList.remove("sel");});
       r.classList.add("sel");
@@ -557,6 +654,11 @@ function renderList(){
     });
     r.addEventListener("dblclick", function(){
       if(f.isDir) go(f.__key || (f.dir?f.dir+"/"+f.name:f.name));
+    });
+    r.addEventListener("contextmenu", function(e){
+      if(!IS_ADM) return;                 // 右键管理菜单仅管理员可见
+      e.preventDefault();
+      openCtx(e.clientX, e.clientY, f, r);
     });
   });
   $("status").textContent = rows.length+" 个项目"+(q?"（搜索结果）":"")+(sel?" · 已选中 1 个":"")+
@@ -585,8 +687,16 @@ function showDetail(f){
     '<div class="kv"><i>大小</i><b>'+fmtSize(f.size)+'</b></div>'+
     '<div class="kv"><i>修改日期</i><b>'+esc(f.mtime||"—")+'</b></div>'+
     '<div class="kv"><i>位置</i><b>'+esc(f.dir||"Git Drive")+'</b></div>'+
+    (typeof f.downloads === "number" ? '<div class="kv"><i>下载次数</i><b>'+f.downloads+'</b></div>' : "")+
+    (f.note ? '<div class="kv"><i>来源</i><b>'+esc(f.note)+'</b></div>' : "")+
+    (f.sha256 ? '<div class="kv"><i>SHA256 校验值</i></div><div class="sha-line">'+esc(f.sha256)+'</div>' : "")+
+    (canPreview(f) ? '<button class="prevbtn" id="prevOpen">👁 在线预览</button>' : "")+
     (main?'<a class="dlbtn" href="'+esc(main)+'" download>'+svgIcon("i-dl")+' 主线下载</a>':"")+
     (back?'<a class="dlbtn alt" href="'+esc(back)+'" download>备用链接（沙箱网盘）</a>':"");
+  if(canPreview(f)){
+    var pb = el.querySelector("#prevOpen");
+    if(pb) pb.addEventListener("click", function(){ openPreview(f); });
+  }
   if(touch) $("detail").classList.add("show");
 }
 $("dclose").addEventListener("click", function(){ $("detail").classList.remove("show"); });
@@ -613,6 +723,7 @@ function go(dir){
   if(dir!==cur) hist.push(cur);
   if(hist.length>60) hist.shift();
   sel = null;
+  multi = {}; renderMultiBar();
   cur = dir;
   renderTree(); renderCrumbs(); renderList();
   if(touch) $("detail").classList.remove("show"); else showDetail(null);
@@ -637,8 +748,24 @@ $("sortBtn").addEventListener("click", function(){
 $("q").addEventListener("input", function(){ sel=null; renderList(); });
 
 /* ===== 加载 ===== */
+function admFetch(url, opt){
+  opt = opt || {};
+  opt.headers = Object.assign({"Authorization": ADM}, opt.headers || {});
+  return fetch(PAN_API + url, opt);
+}
 function load(bust){
   $("list").innerHTML = '<div class="empty">⏳ 正在加载 Git Drive…</div>';
+  if(IS_ADM){
+    // 管理员：直接读沙箱网盘的实时清单（含下载次数与 SHA256）
+    admFetch("/__manifest?_=" + Date.now())
+      .then(function(r){ if(!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(function(j){ DATA = j || {files:[]}; go(""); })
+      .catch(function(){ toast("实时清单获取失败，改用静态数据"); loadFallback(bust); });
+    return;
+  }
+  loadFallback(bust);
+}
+function loadFallback(bust){
   fetch("files.json"+(bust?"?v="+Date.now():""),{cache:"no-store"})
     .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
     .then(function(j){ DATA=j||{files:[]}; go(""); })
@@ -648,6 +775,178 @@ function load(bust){
       $("list").innerHTML='<div class="empty">⚠️ 加载失败（'+esc(e.message)+'）<br>请点 ⟳ 重试</div>';
       $("status").textContent="加载失败";
     });
+}
+/* ===== 管理员登录 ===== */
+function setAdm(on){
+  IS_ADM = on;
+  var t = $("admTxt");
+  if(t) t.textContent = on ? "管理员 · 已登录" : "管理员登录";
+  $("admBtn").classList.toggle("adm-on", on);
+}
+function showErr(t){ var e=$("loginErr"); e.textContent=t; e.hidden=false; }
+$("admBtn").addEventListener("click", function(){
+  if(IS_ADM){ toast("已是管理员身份（数据为实时同步）"); return; }
+  $("loginModal").hidden = false;
+  $("loginErr").hidden = true;
+  $("admUser").value = ""; $("admPass").value = "";
+  setTimeout(function(){ try{ $("admUser").focus(); }catch(e){} }, 60);
+});
+$("loginClose").addEventListener("click", function(){ $("loginModal").hidden = true; });
+$("loginModal").addEventListener("click", function(e){ if(e.target === $("loginModal")) $("loginModal").hidden = true; });
+function doLogin(){
+  var u = $("admUser").value.trim(), p = $("admPass").value;
+  if(!u || !p){ showErr("请填写用户名和密码"); return; }
+  var a = "Basic " + btoa(unescape(encodeURIComponent(u + ":" + p)));
+  $("loginGo").textContent = "验证中…";
+  fetch(PAN_API + "/__whoami", {headers:{"Authorization": a}})
+    .then(function(r){
+      $("loginGo").textContent = "登录";
+      if(r.ok){
+        ADM = a;
+        try { sessionStorage.setItem(ADM_KEY, a); } catch(e){}
+        $("loginModal").hidden = true;
+        setAdm(true);
+        toast("已登录，切换到实时数据");
+        load(true);
+      } else if(r.status === 429){
+        showErr("失败次数过多已被锁定，请稍后再试");
+      } else {
+        showErr("用户名或密码不对");
+      }
+    })
+    .catch(function(){ $("loginGo").textContent = "登录"; showErr("无法连接网盘服务（可能暂时离线）"); });
+}
+$("loginGo").addEventListener("click", doLogin);
+$("admPass").addEventListener("keydown", function(e){ if(e.key === "Enter") doLogin(); });
+
+/* ===== 右键菜单（管理员） ===== */
+var ctx = $("ctxMenu");
+function closeCtx(){ ctx.hidden = true; }
+document.addEventListener("click", closeCtx);
+window.addEventListener("blur", closeCtx);
+function panFileUrl(f){ return PAN_API + "/" + encPath(f.dir ? f.dir + "/" + f.name : f.name); }
+function copyText(t){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(function(){ toast("已复制"); }, function(){ fallbackCopy(t); });
+  } else fallbackCopy(t);
+}
+function fallbackCopy(t){
+  var ta = document.createElement("textarea"); ta.value = t;
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); toast("已复制"); }catch(e){ toast("复制失败"); }
+  document.body.removeChild(ta);
+}
+function openCtx(x, y, f){
+  var main = href(f,"main");
+  var html = "";
+  if(main) html += '<button data-act="dl">⬇ 下载</button>';
+  html += '<button data-act="copy">🔗 复制网盘直链</button>';
+  if(canPreview(f)) html += '<button data-act="prev">👁 在线预览</button>';
+  html += '<div class="sep"></div>';
+  html += '<button data-act="ren">✏️ 改名</button>';
+  html += '<button data-act="del" class="danger">🗑️ 删除（进回收站）</button>';
+  ctx.innerHTML = html;
+  ctx.hidden = false;
+  ctx.style.left = Math.max(4, Math.min(x, innerWidth - ctx.offsetWidth - 8)) + "px";
+  ctx.style.top = Math.max(4, Math.min(y, innerHeight - ctx.offsetHeight - 8)) + "px";
+  ctx.querySelectorAll("button").forEach(function(b){
+    b.addEventListener("click", function(ev){
+      ev.stopPropagation();
+      closeCtx();
+      var act = b.getAttribute("data-act");
+      if(act === "dl" && main){ var a = document.createElement("a"); a.href = main; a.download = f.name; a.click(); }
+      else if(act === "copy") copyText(main || panFileUrl(f));
+      else if(act === "prev") openPreview(f);
+      else if(act === "ren") adminRename(f);
+      else if(act === "del") adminDelete([f]);
+    });
+  });
+}
+function adminRename(f){
+  var to = prompt("改名：「" + f.name + "」→", f.name);
+  if(!to || to === f.name) return;
+  admFetch("/__rename", {method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({dir: f.dir || "", name: f.name, to: to})})
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      if(j.ok){ toast("已改名为 " + (j.name || to)); load(true); }
+      else toast("改名失败：" + (j.error || "未知错误"));
+    })
+    .catch(function(){ toast("网络错误"); });
+}
+function adminDelete(list){
+  if(!list.length) return;
+  if(!confirm("删除所选 " + list.length + " 项？（移入沙箱网盘回收站，可恢复）")) return;
+  var i = 0, fail = 0;
+  (function next(){
+    if(i >= list.length){
+      multi = {}; renderMultiBar();
+      if(fail) toast(fail + " 项删除失败");
+      else toast("已移入回收站，可在沙箱网盘页恢复");
+      load(true);
+      return;
+    }
+    var f = list[i++];
+    admFetch("/__delete/" + encodeURIComponent(f.name) + "?dir=" + encodeURIComponent(f.dir || ""), {method:"DELETE"})
+      .then(function(r){ if(!r.ok) fail++; next(); })
+      .catch(function(){ fail++; next(); });
+  })();
+}
+function renderMultiBar(){
+  var keys = Object.keys(multi);
+  var bar = $("multiBar");
+  if(!keys.length){ bar.hidden = true; return; }
+  bar.hidden = false;
+  bar.innerHTML = "已选 " + keys.length + " 项" +
+    '<button id="mbDel" class="danger">🗑️ 删除所选</button><button id="mbCancel">取消</button>';
+  $("mbDel").addEventListener("click", function(){ adminDelete(keys.map(function(k){ return multi[k]; })); });
+  $("mbCancel").addEventListener("click", function(){
+    multi = {}; renderMultiBar();
+    $("list").querySelectorAll(".row.sel2").forEach(function(x){ x.classList.remove("sel2"); });
+  });
+}
+
+/* ===== 在线预览 ===== */
+var PREV_TEXT = [".txt",".md",".log",".ini",".cfg",".nfo",".json",".xml",".csv",".py",".js",".css",".html",".htm",".bat",".ps1",".reg"];
+var PREV_IMG = [".png",".jpg",".jpeg",".gif",".webp",".bmp",".svg",".ico"];
+function canPreview(f){
+  var d = "." + ext(f.name);
+  return PREV_TEXT.indexOf(d) >= 0 || PREV_IMG.indexOf(d) >= 0 || d === ".pdf";
+}
+var prevModal = $("prevModal");
+function closePrev(){ prevModal.hidden = true; $("prevBody").innerHTML = ""; }
+$("prevClose").addEventListener("click", closePrev);
+prevModal.addEventListener("click", function(e){ if(e.target === prevModal) closePrev(); });
+function openPreview(f){
+  var url = panFileUrl(f);
+  var d = "." + ext(f.name);
+  $("prevTitle").textContent = "预览：" + f.name;
+  $("prevDl").setAttribute("href", url);
+  $("prevDl").setAttribute("download", f.name);
+  $("prevBody").innerHTML = '<p style="color:#6b7a8d">加载中…</p>';
+  prevModal.hidden = false;
+  if(PREV_IMG.indexOf(d) >= 0){ $("prevBody").innerHTML = '<img alt="" src="' + url + '">'; }
+  else if(d === ".pdf"){ $("prevBody").innerHTML = '<iframe src="' + url + '"></iframe>'; }
+  else {
+    fetch(url).then(function(r){ return r.ok ? r.text() : Promise.reject(r.status); })
+      .then(function(t){
+        var pre = document.createElement("pre");
+        pre.textContent = t.length > 400000 ? t.slice(0, 400000) + "\n…（内容过长已截断）" : t;
+        $("prevBody").innerHTML = "";
+        $("prevBody").appendChild(pre);
+      })
+      .catch(function(){ $("prevBody").innerHTML = '<p>预览加载失败（网盘可能暂时离线），稍后再试或直接下载。</p>'; });
+  }
+}
+
+/* ===== 启动：验证已保存的管理员凭据 ===== */
+if(ADM){
+  fetch(PAN_API + "/__whoami", {headers:{"Authorization": ADM}})
+    .then(function(r){
+      if(r.ok){ setAdm(true); load(true); }   // 切到实时数据
+      else { try{ sessionStorage.removeItem(ADM_KEY); }catch(e){} ADM = ""; }
+    })
+    .catch(function(){ /* 网盘离线时静默保持静态数据 */ });
 }
 load(false);
 })();

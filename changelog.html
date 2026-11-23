@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>更新日志 · Geek-Hub</title>
+<meta name="description" content="Geek-Hub 网站与 Git Drive 网盘的更新记录">
+<style>
+  :root{--bg:#0b1220;--card:#141b2b;--line:rgba(255,255,255,.09);--txt:#dbe4ee;
+    --muted:#8fa3b8;--accent:#4cc2ff}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+    font:15px/1.8 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+  .wrap{max-width:720px;margin:0 auto;padding:48px 18px 60px}
+  h1{font-size:1.5rem;margin:0 0 4px}
+  .sub{color:var(--muted);font-size:.85rem;margin-bottom:34px}
+  .item{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:18px 20px;margin-bottom:16px}
+  .item h2{font-size:1rem;margin:0 0 10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .date{color:var(--accent);font-size:.8rem;font-weight:600;
+    background:rgba(76,194,255,.12);border:1px solid rgba(76,194,255,.3);
+    border-radius:20px;padding:1px 10px}
+  .tag{color:#9aa7b8;font-size:.72rem;font-weight:600;
+    background:rgba(255,255,255,.06);border-radius:20px;padding:1px 9px}
+  ul{margin:0;padding-left:1.3em}
+  li{margin:4px 0;color:#c4cfdb}
+  li b{color:var(--txt)}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .back{display:inline-block;margin-bottom:26px;color:var(--muted);font-size:.85rem}
+  footer{color:#5c6b7d;font-size:.75rem;margin-top:40px;text-align:center}
+  footer p{margin:4px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="./">← 返回 Geek-Hub 主页</a>
+  <h1>更新日志</h1>
+  <p class="sub">网站与 Git Drive 网盘的演进记录 · 新内容在顶部</p>
+
+  <div class="item">
+    <h2><span class="date">2026-11-23</span><span class="tag">大版本 · Git Drive 2.0</span></h2>
+    <ul>
+      <li><b>文件在线预览</b>：txt/图片/PDF 免下载直接查看（主页网盘页与沙箱网盘页均支持）</li>
+      <li><b>回收站</b>：删除的文件进回收站，可一键恢复到原位置，也可彻底清除（沙箱网盘页）</li>
+      <li><b>下载次数统计</b>：每个文件的下载量实时可见</li>
+      <li><b>文件安全档案</b>：所有文件标注 SHA256 校验值与来源说明，下载前可自行核对</li>
+      <li><b>Git Drive 管理员面板</b>：登录后可右键改名/删除、Ctrl 多选批量删除、拖拽批量上传（支持整个文件夹）</li>
+      <li>主页网盘页新增「管理员登录」，与沙箱网盘账号打通</li>
+    </ul>
+  </div>
+
+  <div class="item">
+    <h2><span class="date">2026-11-21</span><span class="tag">窗口模式</span></h2>
+    <ul>
+      <li>窗口按钮升级为 SVG 图标，新增<b>三种窗口模式</b>：最小化（主页悬浮球恢复）、窗口化（弹出小窗）、最大化（回到全屏）</li>
+      <li>修复最大化后未回到网盘页、最小化后按钮状态错乱的问题</li>
+      <li>文件图标全部替换为内联 SVG，不再使用 emoji</li>
+      <li>网盘页整体改为 <b>Win11 文件资源管理器</b>风格（Git Drive）：目录树、面包屑、列头排序、详情面板、搜索</li>
+    </ul>
+  </div>
+
+  <div class="item">
+    <h2><span class="date">2026-11-19</span><span class="tag">上传与下载</span></h2>
+    <ul>
+      <li><b>上传断点续传</b>：刷新页面后重新选择文件，自动从已传位置继续，不从头来</li>
+      <li>分片大小随文件体积自动分档（256KB ~ 8MB），大文件上传提速约 70%</li>
+      <li>隧道切换 HTTP/2 协议，上传速度提升约 13 倍</li>
+      <li>免责声明与原创声明改为页面底部直接展示</li>
+    </ul>
+  </div>
+
+  <div class="item">
+    <h2><span class="date">2026-11-17</span><span class="tag">稳定性</span></h2>
+    <ul>
+      <li><b>下载断点续传</b>：支持标准 HTTP Range，中断后重新点击自动续传</li>
+      <li>修复 Range 越界导致下载卡死的问题</li>
+      <li>改名改为原地编辑，不再刷新页面</li>
+    </ul>
+  </div>
+
+  <div class="item">
+    <h2><span class="date">2026-11-14</span><span class="tag">上线</span></h2>
+    <ul>
+      <li>Geek-Hub 网站正式上线，域名 geekhub.dpdns.org 托管至 Cloudflare</li>
+      <li>云盘服务上线（pan.geekhub.dpdns.org），HTTPS 加密直连</li>
+      <li>主页新增云盘专栏与 QQ 群入口</li>
+      <li>管理员上传、防爆破锁定（错误次数越多锁定越久）</li>
+    </ul>
+  </div>
+
+  <footer>
+    <p>Geek-Hub · 更新日志</p>
+    <p><a href="./">主页</a> · <a href="./pan/">网盘</a></p>
+    <p>免责与原创声明见主页底部</p>
+  </footer>
+</div>
+</body>
+</html>

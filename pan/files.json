@@ -1,15 +1,17 @@
 {
-  "updated": "2026-11-21",
-  "generated": 1795263640,
+  "updated": "2026-11-23",
+  "generated": 1795446690,
   "source": "github-releases",
   "files": [
     {
-      "name": "xp_activate32.exe",
-      "dir": "Windows 激活工具/xp_activate32",
-      "size": 326656,
+      "name": "readme.txt",
+      "dir": "",
+      "size": 44,
       "mtime": "2026-11-14",
-      "url": "https://github.com/zzh-hui/Geek-Hub/releases/download/pan-files/xp_activate32.exe",
-      "backup": "https://pan.geekhub.dpdns.org/"
+      "url": "https://github.com/zzh-hui/Geek-Hub/releases/download/pan-files/site_readme.txt",
+      "backup": "https://pan.geekhub.dpdns.org",
+      "sha256": "e0c2eacb5de18cbaaced03c68b66443db0e7ef323c62436ad3dfb33c49edef8b",
+      "note": "站长自制"
     },
     {
       "name": "Readme.txt",
@@ -17,15 +19,19 @@
       "size": 1903,
       "mtime": "2026-11-14",
       "url": "https://github.com/zzh-hui/Geek-Hub/releases/download/pan-files/xp_activate32_readme.txt",
-      "backup": "https://pan.geekhub.dpdns.org/"
+      "backup": "https://pan.geekhub.dpdns.org",
+      "sha256": "a892322622e7ba7d1b5cadeb317d0b00c4f5604abf23e5d02a8e7eaf6013d65c",
+      "note": "站长根据开源项目说明整理"
     },
     {
-      "name": "readme.txt",
-      "dir": "",
-      "size": 44,
+      "name": "xp_activate32.exe",
+      "dir": "Windows 激活工具/xp_activate32",
+      "size": 326656,
       "mtime": "2026-11-14",
-      "url": "https://github.com/zzh-hui/Geek-Hub/releases/download/pan-files/site_readme.txt",
-      "backup": "https://pan.geekhub.dpdns.org/"
+      "url": "https://github.com/zzh-hui/Geek-Hub/releases/download/pan-files/xp_activate32.exe",
+      "backup": "https://pan.geekhub.dpdns.org",
+      "sha256": "5dea9a0ca840d89cab977004e9187cbf2216834d2b771698dc6fc87566d76994",
+      "note": "GitHub 开源项目（MAS-Legacy, AGPL-3.0）官方 Release 原文件，未做任何修改"
     }
   ]
 }
