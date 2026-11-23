@@ -207,8 +207,18 @@
             try {
                 if (localStorage.getItem(KEY) === '1') ball.classList.add('show');
             } catch (e) {}
-            ball.addEventListener('click', function () {
+            ball.addEventListener('click', function (ev) {
                 try { localStorage.removeItem(KEY); } catch (e) {}
+                // 若主页本身被困在弹出的小窗里（窗口化→最小化残留），恢复时
+                // 新开正常标签打开网盘，并关掉这个小窗，避免全屏页面困在小窗里
+                var trapped = window.innerWidth < 760 && window.opener && !window.opener.closed;
+                if (trapped) {
+                    ev.preventDefault();
+                    var w = window.open(ball.getAttribute('href'), '_blank');
+                    try { if (w && w.focus) w.focus(); } catch (e) {}
+                    try { window.close(); } catch (e) {}
+                    setTimeout(function () { if (!window.closed) window.location.href = ball.getAttribute('href'); }, 250);
+                }
             });
         })();
 

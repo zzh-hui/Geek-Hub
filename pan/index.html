@@ -397,7 +397,10 @@ function onMaximize(){
 }
 function onMinimize(){
   try { localStorage.setItem("gh_pan_min", "1"); } catch(e){}
-  location.href = PG_HOME;
+  // 小窗本来就是弹出来的，最小化 = 关掉它最干净；
+  // 只有 close 被浏览器拒绝（如直接输网址 ?mini=1 进来的）才退回跳主页
+  try { window.close(); } catch(e){}
+  setTimeout(function(){ if(!window.closed) location.href = PG_HOME; }, 180);
 }
 function onClose(){ location.href = PG_HOME; }
 function renderWinButtons(){
