@@ -371,8 +371,20 @@
   </div>
 </div>
 
+<div class="gd-modal" id="qrModal" hidden>
+  <div class="gd-box">
+    <div class="gd-mhead"><b id="qrTitle">扫码下载</b><button class="gd-x" id="qrClose">✕</button></div>
+    <div class="gd-mbody" style="display:flex;flex-direction:column;align-items:center;gap:12px">
+      <div id="qrBox" style="background:#fff;padding:12px;border-radius:10px"></div>
+      <div id="qrLink" style="word-break:break-all;text-align:center;color:#8fb8d8;font-size:.75rem;max-width:100%"></div>
+      <button class="gd-primary" id="qrCopy">🔗 复制直链</button>
+    </div>
+  </div>
+</div>
+
 <div id="ctxMenu" class="gd-ctx" hidden></div>
 <div id="multiBar" class="gd-multi" hidden></div>
+<script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@master/qrcode.min.js"></script>
 
 <script>
 (function(){
@@ -692,7 +704,10 @@ function showDetail(f){
     (f.sha256 ? '<div class="kv"><i>SHA256 校验值</i></div><div class="sha-line">'+esc(f.sha256)+'</div>' : "")+
     (canPreview(f) ? '<button class="prevbtn" id="prevOpen">👁 在线预览</button>' : "")+
     (main?'<a class="dlbtn" href="'+esc(main)+'" download>'+svgIcon("i-dl")+' 主线下载</a>':"")+
-    (back?'<a class="dlbtn alt" href="'+esc(back)+'" download>备用链接（沙箱网盘）</a>':"");
+    (back?'<a class="dlbtn alt" href="'+esc(back)+'" download>备用链接（沙箱网盘）</a>':"")+
+    ((main||back)?'<button class="prevbtn" id="shareOpen">📱 二维码分享</button>':"");
+  var sb = el.querySelector("#shareOpen");
+  if(sb) sb.addEventListener("click", function(){ openQr(f); });
   if(canPreview(f)){
     var pb = el.querySelector("#prevOpen");
     if(pb) pb.addEventListener("click", function(){ openPreview(f); });
@@ -836,11 +851,29 @@ function fallbackCopy(t){
   try{ document.execCommand("copy"); toast("已复制"); }catch(e){ toast("复制失败"); }
   document.body.removeChild(ta);
 }
+/* ===== 二维码分享 ===== */
+var qrModal = $("qrModal"), qrBox = $("qrBox"), qrLink = $("qrLink"), qrShareFile = null;
+function openQr(f){
+  var url = href(f,"main") || panFileUrl(f);
+  if(!url){ toast("该文件暂无可分享的直链"); return; }
+  qrShareFile = url;
+  $("qrTitle").textContent = "扫码下载 · " + f.name;
+  qrBox.innerHTML = "";
+  try{ new QRCode(qrBox, { text: url, width: 200, height: 200, colorDark: "#0f172a", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M }); }
+  catch(e){ qrBox.textContent = "二维码加载失败（网络受限）"; }
+  qrLink.textContent = url;
+  qrModal.hidden = false;
+}
+function closeQr(){ qrModal.hidden = true; }
+$("qrClose").addEventListener("click", closeQr);
+qrModal.addEventListener("click", function(e){ if(e.target === qrModal) closeQr(); });
+$("qrCopy").addEventListener("click", function(){ if(qrShareFile) copyText(qrShareFile); });
 function openCtx(x, y, f){
   var main = href(f,"main");
   var html = "";
   if(main) html += '<button data-act="dl">⬇ 下载</button>';
   html += '<button data-act="copy">🔗 复制网盘直链</button>';
+  html += '<button data-act="qr">📱 二维码分享</button>';
   if(canPreview(f)) html += '<button data-act="prev">👁 在线预览</button>';
   html += '<div class="sep"></div>';
   html += '<button data-act="ren">✏️ 改名</button>';
@@ -856,6 +889,7 @@ function openCtx(x, y, f){
       var act = b.getAttribute("data-act");
       if(act === "dl" && main){ var a = document.createElement("a"); a.href = main; a.download = f.name; a.click(); }
       else if(act === "copy") copyText(main || panFileUrl(f));
+      else if(act === "qr") openQr(f);
       else if(act === "prev") openPreview(f);
       else if(act === "ren") adminRename(f);
       else if(act === "del") adminDelete([f]);
