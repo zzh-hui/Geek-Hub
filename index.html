@@ -95,12 +95,12 @@
 
         /* ===== 春节模式 ===== */
         body.cny-mode {
-            --bg-base: #8d0f16;
-            --bg-deep: #b3121c;
-            --card-bg: rgba(140, 18, 26, 0.72);
-            --card-bg-solid: #9c1119;
-            --card-border: rgba(255, 205, 110, 0.38);
-            --text-muted: #ffd9a3;
+            --bg-base: #2a1214;
+            --bg-deep: #47181c;
+            --card-bg: rgba(52, 22, 26, 0.75);
+            --card-bg-solid: #381a1d;
+            --card-border: rgba(255, 195, 120, 0.26);
+            --text-muted: #e6bfa0;
         }
         .cny-banner {
             position: relative;
@@ -126,10 +126,47 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-9px); }
         }
+        .cny-fu {
+            display: none;
+            position: fixed;
+            top: 10px;
+            z-index: 998;
+            width: 46px;
+            height: 52px;
+            border-radius: 8px;
+            background: linear-gradient(160deg, #c22 0%, #8f0f14 100%);
+            border: 2px solid #ffd76e;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 0 0 3px rgba(255, 215, 110, 0.35);
+            color: #ffd76e;
+            font-size: 30px;
+            font-weight: 900;
+            font-family: "Noto Serif SC", "STSong", "SimSun", serif;
+            line-height: 48px;
+            text-align: center;
+            user-select: none;
+            pointer-events: none;
+        }
+        body.cny-mode .cny-fu { display: block; animation: cnySway 3.4s ease-in-out infinite; transform-origin: top center; }
+        .cny-fu-l { left: 12px; }
+        .cny-fu-r { right: 12px; }
+        body.cny-mode .cny-fu::after {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            width: 2px;
+            height: 10px;
+            background: #ffd76e;
+        }
+        .cny-fu span { display: block; transform: rotate(180deg); }
+        @keyframes cnySway {
+            0%, 100% { rotate: -2.5deg; }
+            50% { rotate: 2.5deg; }
+        }
         .cny-music {
             position: fixed;
-            top: 14px;
-            right: 14px;
+            top: 72px;
+            right: 12px;
             z-index: 999;
             width: 44px;
             height: 44px;
@@ -168,6 +205,10 @@
         <p class="cny-banner-title">Geek-Hub 祝大家春节快乐！(˶╹ꇴ╹˶)🧨</p>
         <img class="cny-banner-meme" id="cnyMeme" src="assets/jiedong.png" alt="刘德华解冻100%" draggable="false">
     </div>
+
+    <!-- 倒福挂件：左上 + 右上，固定不随滚动（仅春节模式显示） -->
+    <div class="cny-fu cny-fu-l" aria-hidden="true"><span>福</span></div>
+    <div class="cny-fu cny-fu-r" aria-hidden="true"><span>福</span></div>
 
     <!-- 悬浮音符音乐开关（右上角，跟随滚动，不遮挡内容） -->
     <button class="cny-music" id="musicBtn" type="button" aria-label="开关春节音乐" hidden>
@@ -439,14 +480,23 @@
                     });
                 }
             }
+            var userPaused = false;
             $('musicBtn').addEventListener('click', function () {
                 var btn = $('musicBtn');
                 if (musicEl.paused) {
                     tryPlayMusic();
                 } else {
+                    userPaused = true;
                     musicEl.pause();
                 }
             });
+            /* 音乐默认开启：自动播放被浏览器拦截时，用户首次点击/按键页面任意位置即自动响起 */
+            function firstInteract(ev) {
+                if (ev && ev.target && ev.target.closest && ev.target.closest('#musicBtn')) return;
+                if (!userPaused && musicEl.paused && festOn) tryPlayMusic();
+            }
+            document.addEventListener('pointerdown', firstInteract);
+            document.addEventListener('keydown', firstInteract);
             musicEl.addEventListener('play', function () {
                 var btn = $('musicBtn');
                 btn.classList.add('playing');
