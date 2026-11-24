@@ -92,12 +92,92 @@
         @media (max-width: 480px) {
             .pan-ball { right: 12px; bottom: 12px; padding: 8px 13px 8px 10px; }
         }
+
+        /* ===== 春节模式 ===== */
+        body.cny-mode {
+            --bg-base: #8d0f16;
+            --bg-deep: #b3121c;
+            --card-bg: rgba(140, 18, 26, 0.72);
+            --card-bg-solid: #9c1119;
+            --card-border: rgba(255, 205, 110, 0.38);
+            --text-muted: #ffd9a3;
+        }
+        .cny-banner {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 26px 16px 10px;
+            text-align: center;
+        }
+        .cny-banner-title {
+            font-size: clamp(1.15rem, 4.2vw, 1.7rem);
+            font-weight: 800;
+            color: #ffd76e;
+            text-shadow: 0 0 14px rgba(255, 120, 40, 0.55), 0 2px 0 rgba(120, 0, 0, 0.6);
+            letter-spacing: 1px;
+        }
+        .cny-banner-meme {
+            width: clamp(140px, 26vw, 230px);
+            margin: 10px auto 0;
+            display: block;
+            animation: cnyFloat 2.6s ease-in-out infinite;
+        }
+        @keyframes cnyFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-9px); }
+        }
+        .cny-music {
+            position: fixed;
+            top: 14px;
+            right: 14px;
+            z-index: 999;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255, 215, 110, 0.75);
+            background: rgba(130, 16, 24, 0.85);
+            color: #ffd76e;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 14px rgba(0, 0, 0, 0.35);
+            transition: transform 0.2s;
+        }
+        .cny-music:active { transform: scale(0.92); }
+        .cny-music .cny-note { width: 21px; height: 21px; }
+        .cny-music.playing .cny-note { animation: cnySpin 1.9s linear infinite; }
+        @keyframes cnySpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .cny-music.idle-hint { animation: cnyHint 1.4s ease-in-out infinite; }
+        @keyframes cnyHint {
+            0%, 100% { box-shadow: 0 3px 14px rgba(0,0,0,0.35), 0 0 0 0 rgba(255, 215, 110, 0.65); }
+            50% { box-shadow: 0 3px 14px rgba(0,0,0,0.35), 0 0 0 11px rgba(255, 215, 110, 0); }
+        }
     </style>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "128af1c7bf224d09a564f7fe14c1c17a"}'></script><!-- End Cloudflare Web Analytics -->
 </head>
 <body>
 
     <a class="skip-link" href="#main">跳到主要内容</a>
+
+    <!-- 春节模式：顶部祝福横幅 + 解冻梗图（仅过年期间显示） -->
+    <div class="cny-banner" id="cnyBanner" hidden>
+        <p class="cny-banner-title">Geek-Hub 祝大家春节快乐！(˶╹ꇴ╹˶)🧨</p>
+        <img class="cny-banner-meme" id="cnyMeme" src="assets/jiedong.png" alt="刘德华解冻100%" draggable="false">
+    </div>
+
+    <!-- 悬浮音符音乐开关（右上角，跟随滚动，不遮挡内容） -->
+    <button class="cny-music" id="musicBtn" type="button" aria-label="开关春节音乐" hidden>
+        <svg class="cny-note" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 18V5l12-2v13"></path>
+            <circle cx="6" cy="18" r="3"></circle>
+            <circle cx="18" cy="16" r="3"></circle>
+        </svg>
+    </button>
+    <audio id="cnyMusic" src="assets/gongxifacai.mp3" loop preload="none"></audio>
 
     <div class="layout">
 
@@ -243,7 +323,7 @@
 
             <div class="site-stats" id="siteStats">
                 <p class="stat-line">⏱️ 此网页已运行 <span class="u" id="u-runY"><b id="runY">--</b> 年</span> <span class="u" id="u-runMo"><b id="runMo">--</b> 月</span> <span class="u" id="u-runD"><b id="runD">--</b> 天</span> <span class="u" id="u-runH"><b id="runH">--</b> 时</span> <span class="u" id="u-runMi"><b id="runMi">--</b> 分钟</span> <span class="u" id="u-runS"><b id="runS">--</b> 秒</span></p>
-                <p class="stat-line newyear">🧨 距离过年还有 <span class="u" id="u-cnyD"><b id="cnyD">--</b> 天</span> <span class="u" id="u-cnyH"><b id="cnyH">--</b> 小时</span> <span class="u" id="u-cnyMi"><b id="cnyMi">--</b> 分</span> <span class="u" id="u-cnyS"><b id="cnyS">--</b> 秒</span></p>
+                <p class="stat-line newyear" id="cnyLine">🧨 距离过年还有 <span class="u" id="u-cnyD"><b id="cnyD">--</b> 天</span> <span class="u" id="u-cnyH"><b id="cnyH">--</b> 小时</span> <span class="u" id="u-cnyMi"><b id="cnyMi">--</b> 分</span> <span class="u" id="u-cnyS"><b id="cnyS">--</b> 秒</span></p>
                 <div class="year-progress"><i id="cnyBar"></i></div>
                 <p class="progress-label">🧧 过年倒计时进度 <span id="cnyPct">--</span>%（自上一个过年起）</p>
                 <p class="stat-line">🙋 当前在线人数 <b id="onlineN">--</b><span class="stat-sub">（近 5 分钟访问）</span> · 此网站总浏览量 <b id="pvN">--</b></p>
@@ -317,6 +397,65 @@
                 return new Date(2026, 0, 1);
             }
 
+            /* ===== 春节模式：初一 00:00 → 正月十五 24:00（共十五天） ===== */
+            var FESTIVAL_MS = 15 * 86400 * 1000;
+            var FORCE_FEST = /cnytest=1/.test(location.search); /* 调试用：?cnytest=1 强制进入 */
+            var festOn = false;
+            var cnyLineSaved = null;
+            var musicEl = $('cnyMusic');
+
+            function enterFestival() {
+                document.body.classList.add('cny-mode');
+                $('cnyBanner').hidden = false;
+                $('musicBtn').hidden = false;
+                var line = $('cnyLine');
+                if (!cnyLineSaved) cnyLineSaved = line.innerHTML;
+                line.innerHTML = '🧨 过年就是这几天！！！';
+                line.style.fontSize = 'clamp(0.95rem, 4vw, 1.3rem)';
+                line.style.color = '#ffd76e';
+                tryPlayMusic();
+            }
+            function exitFestival() {
+                document.body.classList.remove('cny-mode');
+                $('cnyBanner').hidden = true;
+                $('musicBtn').hidden = true;
+                musicEl.pause();
+                var btn = $('musicBtn');
+                btn.classList.remove('playing', 'idle-hint');
+                if (cnyLineSaved) {
+                    var line = $('cnyLine');
+                    line.innerHTML = cnyLineSaved;
+                    line.style.fontSize = '';
+                    line.style.color = '';
+                    cnyLineSaved = null;
+                }
+            }
+            function tryPlayMusic() {
+                var p = musicEl.play();
+                if (p && p.catch) {
+                    p.catch(function () {
+                        /* 浏览器拦截自动播放：音符按钮闪烁提示用户点击 */
+                        $('musicBtn').classList.add('idle-hint');
+                    });
+                }
+            }
+            $('musicBtn').addEventListener('click', function () {
+                var btn = $('musicBtn');
+                if (musicEl.paused) {
+                    tryPlayMusic();
+                } else {
+                    musicEl.pause();
+                }
+            });
+            musicEl.addEventListener('play', function () {
+                var btn = $('musicBtn');
+                btn.classList.add('playing');
+                btn.classList.remove('idle-hint');
+            });
+            musicEl.addEventListener('pause', function () {
+                $('musicBtn').classList.remove('playing');
+            });
+
             function tickClock() {
                 var now = new Date();
 
@@ -364,9 +503,18 @@
                 var prev = prevCNY(now);
                 var total = cny.getTime() - prev.getTime();
                 var gone = now.getTime() - prev.getTime();
-                var pct = total > 0 ? Math.min(100, gone / total * 100) : 0;
-                $('cnyBar').style.width = pct.toFixed(1) + '%';
-                $('cnyPct').textContent = pct.toFixed(1);
+                var inFest = FORCE_FEST || (now.getTime() - prev.getTime() < FESTIVAL_MS);
+                if (inFest) {
+                    /* 春节期间：进度条锁定 100%，倒计时换成过年文案 */
+                    if (!festOn) { festOn = true; enterFestival(); }
+                    $('cnyBar').style.width = '100%';
+                    $('cnyPct').textContent = '100.0';
+                } else {
+                    if (festOn) { festOn = false; exitFestival(); }
+                    var pct = total > 0 ? Math.min(100, gone / total * 100) : 0;
+                    $('cnyBar').style.width = pct.toFixed(1) + '%';
+                    $('cnyPct').textContent = pct.toFixed(1);
+                }
             }
             tickClock();
             setInterval(tickClock, 1000);
