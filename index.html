@@ -191,6 +191,54 @@
 
             </div>
 
+            <style>
+                .site-stats {
+                    margin-top: 50px;
+                    padding: 28px 20px 30px;
+                    border-top: 1px solid rgba(148, 163, 184, 0.25);
+                    border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+                    text-align: center;
+                }
+                .site-stats .stat-line {
+                    margin: 10px 0;
+                    font-size: 1.02rem;
+                    color: var(--text-muted);
+                    letter-spacing: 0.3px;
+                }
+                .site-stats .stat-line b {
+                    color: var(--accent);
+                    font-variant-numeric: tabular-nums;
+                }
+                .site-stats .stat-line.newyear { font-size: 1.18rem; color: var(--text-main, #e2e8f0); }
+                .site-stats .stat-line.newyear b { color: #ffb347; font-size: 1.25em; }
+                .site-stats .year-progress {
+                    width: min(520px, 86%);
+                    height: 10px;
+                    margin: 16px auto 6px;
+                    background: rgba(148, 163, 184, 0.18);
+                    border-radius: 99px;
+                    overflow: hidden;
+                }
+                .site-stats .year-progress i {
+                    display: block;
+                    height: 100%;
+                    width: 0;
+                    background: linear-gradient(90deg, #38bdf8, #4cc2ff, #a78bfa);
+                    border-radius: 99px;
+                    transition: width 0.6s ease;
+                }
+                .site-stats .progress-label { font-size: 0.78rem; color: var(--text-muted); }
+                .site-stats .stat-sub { font-size: 0.75rem; color: var(--text-muted); opacity: 0.75; }
+            </style>
+
+            <div class="site-stats" id="siteStats">
+                <p class="stat-line">⏱️ 此网页已运行 <b id="runY">--</b> 年 <b id="runMo">--</b> 月 <b id="runD">--</b> 天 <b id="runH">--</b> 时 <b id="runMi">--</b> 分钟 <b id="runS">--</b> 秒</p>
+                <p class="stat-line newyear">🧨 距离过年还有 <b id="cnyD">--</b> 天 <b id="cnyH">--</b> 小时 <b id="cnyMi">--</b> 分 <b id="cnyS">--</b> 秒</p>
+                <div class="year-progress"><i id="cnyBar"></i></div>
+                <p class="progress-label">🧧 过年倒计时进度 <span id="cnyPct">--</span>%（自上一个过年起）</p>
+                <p class="stat-line">🙋 当前在线人数 <b id="onlineN">--</b><span class="stat-sub">（近 5 分钟访问）</span> · 此网站总浏览量 <b id="pvN">--</b></p>
+            </div>
+
         </main>
     </div>
 
@@ -230,6 +278,108 @@
 
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
+
+        /* ============ 站点统计：运行时间 / 过年倒计时 / 浏览量 / 在线人数 ============ */
+        (function () {
+            var p2 = function (n) { return (n < 10 ? '0' : '') + n; };
+            var $ = function (id) { return document.getElementById(id); };
+
+            /* 建站时间：仓库创建 2026-11-06 21:54:58（北京时间） */
+            var SITE_START = new Date(2026, 10, 6, 21, 54, 58);
+
+            /* 历年春节（正月初一）公历日期，自动选取下一个未来日期 */
+            var CNY = [
+                [2026, 1, 17], [2027, 1, 6], [2028, 0, 26], [2029, 1, 13], [2030, 1, 3],
+                [2031, 0, 23], [2032, 1, 11], [2033, 0, 31], [2034, 1, 19], [2035, 1, 8]
+            ];
+            function nextCNY(now) {
+                for (var i = 0; i < CNY.length; i++) {
+                    var d = new Date(CNY[i][0], CNY[i][1], CNY[i][2], 0, 0, 0);
+                    if (d.getTime() > now.getTime()) return d;
+                }
+                return new Date(2036, 0, 28);
+            }
+            function prevCNY(now) {
+                for (var i = CNY.length - 1; i >= 0; i--) {
+                    var d = new Date(CNY[i][0], CNY[i][1], CNY[i][2], 0, 0, 0);
+                    if (d.getTime() <= now.getTime()) return d;
+                }
+                return new Date(2026, 0, 1);
+            }
+
+            function tickClock() {
+                var now = new Date();
+
+                /* 运行时间：年月日历法差值 + 时分秒 */
+                var y = now.getFullYear() - SITE_START.getFullYear();
+                var mo = now.getMonth() - SITE_START.getMonth();
+                var d = now.getDate() - SITE_START.getDate();
+                var h = now.getHours() - SITE_START.getHours();
+                var mi = now.getMinutes() - SITE_START.getMinutes();
+                var s = now.getSeconds() - SITE_START.getSeconds();
+                if (s < 0) { s += 60; mi--; }
+                if (mi < 0) { mi += 60; h--; }
+                if (h < 0) { h += 24; d--; }
+                if (d < 0) { mo--; d += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); }
+                if (mo < 0) { mo += 12; y--; }
+                $('runY').textContent = p2(y);
+                $('runMo').textContent = p2(mo);
+                $('runD').textContent = p2(d);
+                $('runH').textContent = p2(h);
+                $('runMi').textContent = p2(mi);
+                $('runS').textContent = p2(s);
+
+                /* 过年倒计时 */
+                var cny = nextCNY(now);
+                var left = Math.max(0, Math.floor((cny.getTime() - now.getTime()) / 1000));
+                var cd = Math.floor(left / 86400);
+                var ch = Math.floor(left % 86400 / 3600);
+                var cm = Math.floor(left % 3600 / 60);
+                var cs = left % 60;
+                $('cnyD').textContent = p2(cd);
+                $('cnyH').textContent = p2(ch);
+                $('cnyMi').textContent = p2(cm);
+                $('cnyS').textContent = p2(cs);
+
+                /* 过年倒计时进度：上一个过年 → 下一个过年 */
+                var prev = prevCNY(now);
+                var total = cny.getTime() - prev.getTime();
+                var gone = now.getTime() - prev.getTime();
+                var pct = total > 0 ? Math.min(100, gone / total * 100) : 0;
+                $('cnyBar').style.width = pct.toFixed(1) + '%';
+                $('cnyPct').textContent = pct.toFixed(1);
+            }
+            tickClock();
+            setInterval(tickClock, 1000);
+
+            /* 浏览量 + 在线人数（Abacus 免费计数服务，失败时显示 --） */
+            var NS = 'ghstats9';
+            function bucketKey(dt) {
+                return 'on-' + dt.getFullYear() + p2(dt.getMonth() + 1) + p2(dt.getDate()) + p2(dt.getHours()) + p2(dt.getMinutes());
+            }
+            function api(path) {
+                return fetch('https://abacus.jasoncameron.dev/' + path, { cache: 'no-store' })
+                    .then(function (r) { return r.json(); });
+            }
+            (function loadCounters() {
+                var now = new Date();
+                var pvP = api('hit/' + NS + '/sitepv').catch(function () { return null; });
+                /* 在线人数：当前分钟 +1，再取最近 5 分钟各桶之和 */
+                var gets = [];
+                for (var i = 0; i < 5; i++) {
+                    gets.push(api('get/' + NS + '/' + bucketKey(new Date(now.getTime() - i * 60000))).catch(function () { return null; }));
+                }
+                api('hit/' + NS + '/' + bucketKey(now)).catch(function () {});
+                Promise.all(gets).then(function (arr) {
+                    var online = 0, ok = false;
+                    arr.forEach(function (j) { if (j && typeof j.value === 'number') { online += j.value; ok = true; } });
+                    if (ok) $('onlineN').textContent = online;
+                });
+                pvP.then(function (j) {
+                    if (j && typeof j.value === 'number') $('pvN').textContent = j.value;
+                });
+            })();
+        })();
 
         // Git Drive 最小化后，在主页显示恢复用的悬浮球
         (function () {
