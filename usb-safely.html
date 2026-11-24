@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USB_safely U盘锁 - Geek-Hub 极客工坊</title>
+
+    <meta name="description" content="USB_safely U盘锁：给 U 盘上锁的 Windows 安全工具。插上即锁、输对密码才能访问，内置屏幕键盘、快捷键屏蔽、递进惩罚与零残留卸载。开源免费。">
+    <meta name="keywords" content="USB_safely,U盘锁,U盘加密,Windows安全工具,屏幕键盘,开源">
+    <meta name="author" content="Geek-Hub">
+    <link rel="canonical" href="https://geekhub.dpdns.org/usb-safely.html">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Geek-Hub | 极客工坊">
+    <meta property="og:title" content="USB_safely U盘锁 - 给 U 盘上锁的 Windows 安全工具">
+    <meta property="og:description" content="插上即锁，输对密码才能访问。屏幕键盘、快捷键屏蔽、递进惩罚，单文件免安装。">
+    <meta property="og:url" content="https://geekhub.dpdns.org/usb-safely.html">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="USB_safely U盘锁 - Geek-Hub">
+    <meta name="twitter:description" content="给 U 盘上锁的 Windows 安全工具，开源免费。">
+
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230f172a'/%3E%3Ctext x='50' y='68' font-size='46' font-family='system-ui,sans-serif' font-weight='bold' fill='%2338bdf8' text-anchor='middle'%3EGH%3C/text%3E%3C/svg%3E%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230f172a'/%3E%3Ctext x='50' y='68' font-size='46' font-family='system-ui,sans-serif' font-weight='bold' fill='%2338bdf8' text-anchor='middle'%3EGH%3C/text%3E%3C/svg%3E%3E">
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--accent);
+            text-decoration: none;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            min-height: 44px;
+        }
+
+        .back-link:hover { text-decoration: underline; }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header-icon { font-size: 60px; margin-bottom: 15px; display: block; }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #fff;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 12px;
+        }
+
+        .meta-line {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .btn-download {
+            display: inline-block;
+            padding: 15px 40px;
+            background: var(--accent);
+            color: #0f172a;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-download:hover {
+            background: var(--accent-soft);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.6);
+        }
+
+        .btn-github {
+            display: inline-block;
+            margin-left: 12px;
+            padding: 15px 30px;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .btn-github:hover { background: rgba(56, 189, 248, 0.1); }
+
+        ul.check-list { list-style: none; }
+
+        ul.check-list li {
+            margin-bottom: 12px;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        ul.check-list li::before {
+            content: "✦";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        table.punish {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.92rem;
+        }
+
+        table.punish th, table.punish td {
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            padding: 10px 14px;
+            text-align: left;
+        }
+
+        table.punish th { color: var(--accent); font-weight: 600; }
+
+        .footer { text-align: center; margin-top: 60px; color: var(--text-muted); font-size: 0.85rem; line-height: 1.8; }
+
+        @media (max-width: 600px) {
+            .container { padding: 24px 16px 0; }
+            .header h1 { font-size: 2rem; }
+            .btn-github { margin-left: 0; margin-top: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← 返回 Geek-Hub</a>
+
+        <header class="header">
+            <span class="header-icon" aria-hidden="true">🔒</span>
+            <h1>USB_safely · U盘锁</h1>
+            <p class="subtitle">给 U 盘上锁的 Windows 安全工具：插上即锁，输对密码才能访问。</p>
+            <p class="meta-line">原创项目 · 开源免费 · 纯 Win32 API · 单文件约 300KB 免安装 · 当前版本 v2.1.1.5</p>
+            <a href="https://github.com/zzh-hui/USB_safely/releases/latest" class="btn-download" target="_blank" rel="noopener noreferrer">📥 下载最新版（GitHub）</a>
+            <a href="https://github.com/zzh-hui/USB_safely" class="btn-github" target="_blank" rel="noopener noreferrer">⭐ 查看源码仓库</a>
+        </header>
+
+        <!-- 核心功能 -->
+        <section class="card">
+            <h2>✨ 核心功能</h2>
+            <ul class="check-list">
+                <li><strong>插上即锁</strong>：U 盘接入后运行程序，锁定界面全屏置顶，输对密码才能访问 U 盘内容。</li>
+                <li><strong>自带屏幕键盘</strong>：38 键自创键盘（A-Z、0-9、符号），按解锁模式智能过滤按键。</li>
+                <li><strong>快捷键屏蔽</strong>：Win、Alt+Tab、Alt+F4 等逃逸组合全部拦截（Ctrl+Alt+Del 为系统安全序列，无法屏蔽）。</li>
+                <li><strong>密码仅存哈希</strong>：SHA256 存储，明文不落盘；密码文件原子化写入，杜绝损坏。</li>
+                <li><strong>递进惩罚</strong>：输错次数越多锁定越久，极端情况可选格式化兜底。</li>
+                <li><strong>超级模式</strong>：忘记密码可通过恢复密码重置，支持定时自动重置。</li>
+                <li><strong>安装卸载二合一</strong>：一个 exe 搞定安装与卸载，注册表零残留。</li>
+            </ul>
+        </section>
+
+        <!-- 解锁模式 -->
+        <section class="card">
+            <h2>🔑 五档解锁模式</h2>
+            <ul class="check-list">
+                <li><strong>无需解锁</strong>：程序待命，不锁。</li>
+                <li><strong>普通模式</strong>：纯数字密码。</li>
+                <li><strong>加密模式</strong>：纯字母密码。</li>
+                <li><strong>进阶模式</strong>：9 位数字 + 字母 + 符号混合。</li>
+                <li><strong>密钥模式</strong>：最长 500 位任意字符，符号、emoji 皆可。</li>
+            </ul>
+            <p style="margin-top: 12px; color: var(--text-muted); font-size: 0.9rem;">
+                修改密码时解锁模式自动跟随新密码切换；手动切换模式需验证当前密码，从设计上杜绝「密码与模式不符被锁死」。
+            </p>
+        </section>
+
+        <!-- 惩罚机制 -->
+        <section class="card">
+            <h2>⚡ 递进惩罚机制</h2>
+            <table class="punish">
+                <tr><th>累计输错</th><th>后果</th></tr>
+                <tr><td>每满 5 次</td><td>锁定时长递增 10 分钟（10 / 20 / 30 分钟…）</td></tr>
+                <tr><td>超过 60 次</td><td>强制格式化兜底（默认关闭，需在超级模式手动开启）</td></tr>
+            </table>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">锁屏界面实时显示已输错次数与剩余锁定时间，防止误触。</p>
+        </section>
+
+        <!-- 使用教程 -->
+        <section class="card">
+            <h2>💡 使用教程</h2>
+            <ol>
+                <li>从 GitHub 下载 <strong>USBsafely-Setup.exe</strong>（安装/卸载二合一）。</li>
+                <li>双击运行，选择安装目录：U 盘根目录（正式使用）或硬盘目录如 <code>C:\USBsafely</code>（无 U 盘测试）。</li>
+                <li>首次安装设置 4 位启动密码，后续可在 <code>setup.bat</code> 中修改密码与解锁模式。</li>
+                <li>双击 <code>run.bat</code> 启动锁定；输对密码解锁后程序缩至托盘，双击托盘图标可重新锁定。</li>
+                <li>卸载：控制面板卸载，或再次运行 USBsafely-Setup.exe（需输入启动密码），文件与注册表一并清理干净。</li>
+            </ol>
+            <p style="margin-top: 14px; color: var(--text-muted); font-size: 0.88rem;">
+                提示：拔出 U 盘后程序自动退出；忘记密码可在设置页连点版本号 5 下进入超级模式，用恢复密码重置。
+            </p>
+        </section>
+
+        <!-- 常见问题 -->
+        <section class="card faq">
+            <h2>❓ 常见问题</h2>
+            <dl>
+                <dt>没有 U 盘可以测试吗？</dt>
+                <dd>可以。安装时选一个硬盘目录（如 C:\USBsafely），它会把该目录当作「虚拟 U 盘」，测试完用卸载功能一键清干净。</dd>
+
+                <dt>忘记密码怎么办？</dt>
+                <dd>打开设置页，连点版本号 5 次进入超级模式，输入恢复密码即可重置锁屏密码；也可预先设置 24 小时 / 30 天 / 365 天自动重置。</dd>
+
+                <dt>为什么 U 盘插上不会自动锁？</dt>
+                <dd>Windows 7 起系统已禁用 U 盘自动运行（防病毒机制），插入后需双击 run.bat 启动锁定。</dd>
+
+                <dt>程序体积多大？依赖什么？</dt>
+                <dd>单文件约 300KB，纯 Windows 系统 API 编写，零第三方依赖，拷进 U 盘即可运行。</dd>
+            </dl>
+        </section>
+
+        <footer class="footer">
+            <p>USB_safely 设计方案与程序由 <strong>哔站@APPLE_INT</strong> 原创，Geek-Hub 协助实现。</p>
+            <p>受《著作权法》保护，未经授权严禁倒卖与洗稿。<br>© <span id="year">2026</span> Geek-Hub.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
