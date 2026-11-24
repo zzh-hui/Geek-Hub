@@ -201,16 +201,26 @@
                 }
                 .site-stats .stat-line {
                     margin: 10px 0;
-                    font-size: 1.02rem;
+                    white-space: nowrap;
+                    font-size: clamp(0.7rem, 3.1vw, 1.02rem);
                     color: var(--text-muted);
                     letter-spacing: 0.3px;
+                }
+                .site-stats .u {
+                    display: inline-block;
+                    white-space: nowrap;
+                    margin: 0 2px;
                 }
                 .site-stats .stat-line b {
                     color: var(--accent);
                     font-variant-numeric: tabular-nums;
                 }
-                .site-stats .stat-line.newyear { font-size: 1.18rem; color: var(--text-main, #e2e8f0); }
+                .site-stats .stat-line.newyear { font-size: clamp(0.82rem, 3.6vw, 1.18rem); color: var(--text-main, #e2e8f0); }
                 .site-stats .stat-line.newyear b { color: #ffb347; font-size: 1.25em; }
+                .site-stats .stat-line:last-child { font-size: clamp(0.66rem, 2.9vw, 0.98rem); }
+                @media (max-width: 420px) {
+                    .site-stats .stat-sub { display: none; }
+                }
                 .site-stats .year-progress {
                     width: min(520px, 86%);
                     height: 10px;
@@ -232,8 +242,8 @@
             </style>
 
             <div class="site-stats" id="siteStats">
-                <p class="stat-line">⏱️ 此网页已运行 <b id="runY">--</b> 年 <b id="runMo">--</b> 月 <b id="runD">--</b> 天 <b id="runH">--</b> 时 <b id="runMi">--</b> 分钟 <b id="runS">--</b> 秒</p>
-                <p class="stat-line newyear">🧨 距离过年还有 <b id="cnyD">--</b> 天 <b id="cnyH">--</b> 小时 <b id="cnyMi">--</b> 分 <b id="cnyS">--</b> 秒</p>
+                <p class="stat-line">⏱️ 此网页已运行 <span class="u" id="u-runY"><b id="runY">--</b> 年</span> <span class="u" id="u-runMo"><b id="runMo">--</b> 月</span> <span class="u" id="u-runD"><b id="runD">--</b> 天</span> <span class="u" id="u-runH"><b id="runH">--</b> 时</span> <span class="u" id="u-runMi"><b id="runMi">--</b> 分钟</span> <span class="u" id="u-runS"><b id="runS">--</b> 秒</span></p>
+                <p class="stat-line newyear">🧨 距离过年还有 <span class="u" id="u-cnyD"><b id="cnyD">--</b> 天</span> <span class="u" id="u-cnyH"><b id="cnyH">--</b> 小时</span> <span class="u" id="u-cnyMi"><b id="cnyMi">--</b> 分</span> <span class="u" id="u-cnyS"><b id="cnyS">--</b> 秒</span></p>
                 <div class="year-progress"><i id="cnyBar"></i></div>
                 <p class="progress-label">🧧 过年倒计时进度 <span id="cnyPct">--</span>%（自上一个过年起）</p>
                 <p class="stat-line">🙋 当前在线人数 <b id="onlineN">--</b><span class="stat-sub">（近 5 分钟访问）</span> · 此网站总浏览量 <b id="pvN">--</b></p>
@@ -322,12 +332,16 @@
                 if (h < 0) { h += 24; d--; }
                 if (d < 0) { mo--; d += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); }
                 if (mo < 0) { mo += 12; y--; }
-                $('runY').textContent = p2(y);
-                $('runMo').textContent = p2(mo);
-                $('runD').textContent = p2(d);
-                $('runH').textContent = p2(h);
-                $('runMi').textContent = p2(mi);
-                $('runS').textContent = p2(s);
+                /* 开头连续为零的单位整段隐藏（中间的零正常显示），全零时只显示秒 */
+                var runVals = [y, mo, d, h, mi, s];
+                var runIds = ['u-runY', 'u-runMo', 'u-runD', 'u-runH', 'u-runMi', 'u-runS'];
+                var runTexts = [p2(y), p2(mo), p2(d), p2(h), p2(mi), p2(s)];
+                var rFirst = 0;
+                while (rFirst < runVals.length - 1 && runVals[rFirst] === 0) rFirst++;
+                runIds.forEach(function (id, i) {
+                    $(id).style.display = (i >= rFirst) ? '' : 'none';
+                    $(id).querySelector('b').textContent = runTexts[i];
+                });
 
                 /* 过年倒计时 */
                 var cny = nextCNY(now);
@@ -336,10 +350,15 @@
                 var ch = Math.floor(left % 86400 / 3600);
                 var cm = Math.floor(left % 3600 / 60);
                 var cs = left % 60;
-                $('cnyD').textContent = p2(cd);
-                $('cnyH').textContent = p2(ch);
-                $('cnyMi').textContent = p2(cm);
-                $('cnyS').textContent = p2(cs);
+                var cnyVals = [cd, ch, cm, cs];
+                var cnyIds = ['u-cnyD', 'u-cnyH', 'u-cnyMi', 'u-cnyS'];
+                var cnyTexts = [p2(cd), p2(ch), p2(cm), p2(cs)];
+                var cFirst = 0;
+                while (cFirst < cnyVals.length - 1 && cnyVals[cFirst] === 0) cFirst++;
+                cnyIds.forEach(function (id, i) {
+                    $(id).style.display = (i >= cFirst) ? '' : 'none';
+                    $(id).querySelector('b').textContent = cnyTexts[i];
+                });
 
                 /* 过年倒计时进度：上一个过年 → 下一个过年 */
                 var prev = prevCNY(now);
