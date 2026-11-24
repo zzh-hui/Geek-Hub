@@ -1,0 +1,53 @@
+name: Uptime 监控
+
+# 每 10 分钟探测一次云盘（GitHub 定时任务可能有几分钟延迟，属正常现象）
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 探测云盘
+        id: ping
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" -m 25 "https://pan.geekhub.dpdns.org/" || echo "000")
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+
+      - name: 查询上一次运行结果
+        id: prev
+        run: |
+          res=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/uptime.yml/runs?per_page=3")
+          prev=$(echo "$res" | python3 -c "
+          import json,sys
+          d=json.load(sys.stdin)
+          runs=[r for r in d.get('workflow_runs',[]) if r['id'] != ${{ github.run_id }}]
+          print(runs[0]['conclusion'] if runs else 'unknown')
+          ")
+          echo "prev=$prev" >> "$GITHUB_OUTPUT"
+
+      # 只在「成功 → 失败」状态切换时推送，避免掉线期间每 10 分钟轰炸一次
+      - name: 掉线通知
+        if: steps.ping.outputs.code != '200' && steps.prev.outputs.prev == 'success'
+        run: |
+          curl -s \
+            -H "Title: ⚠️ GeekHub 云盘掉线了" \
+            -H "Priority: high" \
+            -H "Tags: warning" \
+            -d "pan.geekhub.dpdns.org 探测失败（HTTP ${{ steps.ping.outputs.code }}），沙箱可能休眠了。去 WorkBuddy 让 AI 启动服务器即可恢复。" \
+            https://ntfy.sh/geekhub-pan-7xq29m
+
+      - name: 恢复通知
+        if: steps.ping.outputs.code == '200' && steps.prev.outputs.prev != 'success' && steps.prev.outputs.prev != 'unknown'
+        run: |
+          curl -s \
+            -H "Title: ✅ GeekHub 云盘已恢复" \
+            -H "Tags: white_check_mark" \
+            -d "云盘已恢复在线。" \
+            https://ntfy.sh/geekhub-pan-7xq29m
