@@ -106,7 +106,7 @@
             position: relative;
             max-width: 900px;
             margin: 0 auto;
-            padding: 26px 16px 10px;
+            padding: 100px 16px 10px;   /* 顶部让出空间：福字挂在最上方，标题在其下方 */
             text-align: center;
         }
         .cny-banner-title {
@@ -126,39 +126,41 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-9px); }
         }
+        /* 福字挂件：absolute 挂在网页最上方（页面顶端，滚动时留在原地/滚出屏幕外），菱形倒福 */
         .cny-fu {
             display: none;
-            position: fixed;
-            top: 10px;
+            position: absolute;
+            top: 22px;
             z-index: 998;
-            width: 46px;
-            height: 52px;
-            border-radius: 8px;
+            width: 44px;
+            height: 44px;
+            border-radius: 7px;
             background: linear-gradient(160deg, #c22 0%, #8f0f14 100%);
             border: 2px solid #ffd76e;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 0 0 3px rgba(255, 215, 110, 0.35);
             color: #ffd76e;
-            font-size: 30px;
+            font-size: 23px;
             font-weight: 900;
             font-family: "Noto Serif SC", "STSong", "SimSun", serif;
-            line-height: 48px;
             text-align: center;
             user-select: none;
             pointer-events: none;
+            transform: rotate(45deg);   /* 外框转 45° 成菱形 */
         }
         body.cny-mode .cny-fu { display: block; animation: cnySway 3.4s ease-in-out infinite; transform-origin: top center; }
-        .cny-fu-l { left: 12px; }
-        .cny-fu-r { right: 12px; }
+        .cny-fu-l { left: 26px; }
+        .cny-fu-r { right: 26px; }
         body.cny-mode .cny-fu::after {
             content: "";
             position: absolute;
-            top: -10px;
+            top: -14px;
             left: 50%;
             width: 2px;
-            height: 10px;
+            height: 14px;
             background: #ffd76e;
         }
-        .cny-fu span { display: block; transform: rotate(180deg); }
+        /* 文字相对外框 -45°（回到水平轴）再转 180°（倒福） */
+        .cny-fu span { display: block; line-height: 41px; transform: rotate(135deg); }
         @keyframes cnySway {
             0%, 100% { rotate: -2.5deg; }
             50% { rotate: 2.5deg; }
